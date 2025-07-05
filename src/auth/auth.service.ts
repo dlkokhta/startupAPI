@@ -1,32 +1,49 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+// import { PrismaService } from 'src/prisma/prisma.service';
 import { userRegistration } from './dto/userRegistration.dto';
+import { hash } from 'argon2';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prismaService: PrismaService) {}
+  private readonly JWT_SECRET: string;
+  private readonly JWT_ACCESS_TOKEN_TTL: string;
+  private readonly JWT_REFRESH_TOKEN_TTL: string;
+
+  constructor(
+    // private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
+  ) {
+    this.JWT_SECRET = configService.getOrThrow<string>('JWT_SECRET');
+    this.JWT_ACCESS_TOKEN_TTL = configService.getOrThrow<string>(
+      'JWT_ACCESS_TOKEN_TTL',
+    );
+    this.JWT_REFRESH_TOKEN_TTL = configService.getOrThrow<string>(
+      'JWT_REFRESH_TOKEN_TTL',
+    );
+  }
 
   async register(dto: userRegistration) {
     const { name, email, password } = dto;
     console.log(name, email, password);
 
-    const existUser = await this.prismaService.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    // const existUser = await this.prismaService.user.findUnique({
+    //   where: {
+    //     email,
+    //   },
+    // });
 
-    if (existUser) {
-      throw new ConflictException('User with this email already registered');
-    }
+    // if (existUser) {
+    //   throw new ConflictException('User with this email already registered');
+    // }
 
-    const user = await this.prismaService.user.create({
-      data: {
-        name,
-        email,
-        password,
-      },
-    });
-    return user;
+    // const user = await this.prismaService.user.create({
+    //   data: {
+    //     name,
+    //     email,
+    //     password: await hash(password),
+    //   },
+    // });
+    // return user;
   }
 }
