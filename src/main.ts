@@ -4,11 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
+import IORedis from 'ioredis';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = app.get(ConfigService);
+  // const redis = new IORedis(config.getOrThrow('REDIS_URL'));
   app.use(cookieParser(config.getOrThrow<string>('COOKIES_SEKRET')));
 
   app.useGlobalPipes(

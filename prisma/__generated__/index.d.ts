@@ -24,10 +24,20 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
 /**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
+/**
  * Model Token
  * 
  */
 export type Token = $Result.DefaultSelection<Prisma.$TokenPayload>
+/**
+ * Model LoginAttempt
+ * 
+ */
+export type LoginAttempt = $Result.DefaultSelection<Prisma.$LoginAttemptPayload>
 
 /**
  * Enums
@@ -35,14 +45,15 @@ export type Token = $Result.DefaultSelection<Prisma.$TokenPayload>
 export namespace $Enums {
   export const UserRole: {
   REGULAR: 'REGULAR',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR'
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
 export const AuthMethod: {
-  CREADENTIALS: 'CREADENTIALS',
+  CREDENTIALS: 'CREDENTIALS',
   GOOGLE: 'GOOGLE'
 };
 
@@ -217,6 +228,16 @@ export class PrismaClient<
   get account(): Prisma.AccountDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.refreshToken`: Exposes CRUD operations for the **RefreshToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RefreshTokens
+    * const refreshTokens = await prisma.refreshToken.findMany()
+    * ```
+    */
+  get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.token`: Exposes CRUD operations for the **Token** model.
     * Example usage:
     * ```ts
@@ -225,6 +246,16 @@ export class PrismaClient<
     * ```
     */
   get token(): Prisma.TokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.loginAttempt`: Exposes CRUD operations for the **LoginAttempt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LoginAttempts
+    * const loginAttempts = await prisma.loginAttempt.findMany()
+    * ```
+    */
+  get loginAttempt(): Prisma.LoginAttemptDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -667,7 +698,9 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Account: 'Account',
-    Token: 'Token'
+    RefreshToken: 'RefreshToken',
+    Token: 'Token',
+    LoginAttempt: 'LoginAttempt'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -686,7 +719,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "token"
+      modelProps: "user" | "account" | "refreshToken" | "token" | "loginAttempt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -838,6 +871,80 @@ export namespace Prisma {
           }
         }
       }
+      RefreshToken: {
+        payload: Prisma.$RefreshTokenPayload<ExtArgs>
+        fields: Prisma.RefreshTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RefreshTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RefreshTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.RefreshTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RefreshTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          findMany: {
+            args: Prisma.RefreshTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          create: {
+            args: Prisma.RefreshTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          createMany: {
+            args: Prisma.RefreshTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RefreshTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.RefreshTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          update: {
+            args: Prisma.RefreshTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.RefreshTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RefreshTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RefreshTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.RefreshTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.RefreshTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRefreshToken>
+          }
+          groupBy: {
+            args: Prisma.RefreshTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RefreshTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RefreshTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<RefreshTokenCountAggregateOutputType> | number
+          }
+        }
+      }
       Token: {
         payload: Prisma.$TokenPayload<ExtArgs>
         fields: Prisma.TokenFieldRefs
@@ -909,6 +1016,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TokenCountArgs<ExtArgs>
             result: $Utils.Optional<TokenCountAggregateOutputType> | number
+          }
+        }
+      }
+      LoginAttempt: {
+        payload: Prisma.$LoginAttemptPayload<ExtArgs>
+        fields: Prisma.LoginAttemptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LoginAttemptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LoginAttemptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          findFirst: {
+            args: Prisma.LoginAttemptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LoginAttemptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          findMany: {
+            args: Prisma.LoginAttemptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>[]
+          }
+          create: {
+            args: Prisma.LoginAttemptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          createMany: {
+            args: Prisma.LoginAttemptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LoginAttemptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>[]
+          }
+          delete: {
+            args: Prisma.LoginAttemptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          update: {
+            args: Prisma.LoginAttemptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          deleteMany: {
+            args: Prisma.LoginAttemptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LoginAttemptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LoginAttemptUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>[]
+          }
+          upsert: {
+            args: Prisma.LoginAttemptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LoginAttemptPayload>
+          }
+          aggregate: {
+            args: Prisma.LoginAttemptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLoginAttempt>
+          }
+          groupBy: {
+            args: Prisma.LoginAttemptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LoginAttemptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LoginAttemptCountArgs<ExtArgs>
+            result: $Utils.Optional<LoginAttemptCountAggregateOutputType> | number
           }
         }
       }
@@ -998,7 +1179,9 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     account?: AccountOmit
+    refreshToken?: RefreshTokenOmit
     token?: TokenOmit
+    loginAttempt?: LoginAttemptOmit
   }
 
   /* Types for Logging */
@@ -1094,10 +1277,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     accounts: number
+    refreshTokens: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   }
 
   // Custom InputTypes
@@ -1118,6 +1303,13 @@ export namespace Prisma {
     where?: AccountWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefreshTokenWhereInput
+  }
+
 
   /**
    * Models
@@ -1135,42 +1327,57 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: string | null
+    firstname: string | null
+    lastname: string | null
     email: string | null
     password: string | null
     displayName: string | null
-    picture: string | null
+    avatar: string | null
+    phone: string | null
     role: $Enums.UserRole | null
-    isVerified: boolean | null
-    isTwoFactorEnabled: boolean | null
     method: $Enums.AuthMethod | null
+    isVerified: boolean | null
+    isActive: boolean | null
+    isTwoFactorEnabled: boolean | null
+    lastLogin: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
+    firstname: string | null
+    lastname: string | null
     email: string | null
     password: string | null
     displayName: string | null
-    picture: string | null
+    avatar: string | null
+    phone: string | null
     role: $Enums.UserRole | null
-    isVerified: boolean | null
-    isTwoFactorEnabled: boolean | null
     method: $Enums.AuthMethod | null
+    isVerified: boolean | null
+    isActive: boolean | null
+    isTwoFactorEnabled: boolean | null
+    lastLogin: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
+    firstname: number
+    lastname: number
     email: number
     password: number
     displayName: number
-    picture: number
+    avatar: number
+    phone: number
     role: number
-    isVerified: number
-    isTwoFactorEnabled: number
     method: number
+    isVerified: number
+    isActive: number
+    isTwoFactorEnabled: number
+    lastLogin: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1179,42 +1386,57 @@ export namespace Prisma {
 
   export type UserMinAggregateInputType = {
     id?: true
+    firstname?: true
+    lastname?: true
     email?: true
     password?: true
     displayName?: true
-    picture?: true
+    avatar?: true
+    phone?: true
     role?: true
-    isVerified?: true
-    isTwoFactorEnabled?: true
     method?: true
+    isVerified?: true
+    isActive?: true
+    isTwoFactorEnabled?: true
+    lastLogin?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
+    firstname?: true
+    lastname?: true
     email?: true
     password?: true
     displayName?: true
-    picture?: true
+    avatar?: true
+    phone?: true
     role?: true
-    isVerified?: true
-    isTwoFactorEnabled?: true
     method?: true
+    isVerified?: true
+    isActive?: true
+    isTwoFactorEnabled?: true
+    lastLogin?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
+    firstname?: true
+    lastname?: true
     email?: true
     password?: true
     displayName?: true
-    picture?: true
+    avatar?: true
+    phone?: true
     role?: true
-    isVerified?: true
-    isTwoFactorEnabled?: true
     method?: true
+    isVerified?: true
+    isActive?: true
+    isTwoFactorEnabled?: true
+    lastLogin?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1294,14 +1516,19 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
+    firstname: string | null
+    lastname: string | null
     email: string
-    password: string
-    displayName: string
-    picture: string | null
+    password: string | null
+    displayName: string | null
+    avatar: string | null
+    phone: string | null
     role: $Enums.UserRole
-    isVerified: boolean
-    isTwoFactorEnabled: boolean
     method: $Enums.AuthMethod
+    isVerified: boolean
+    isActive: boolean
+    isTwoFactorEnabled: boolean
+    lastLogin: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1325,65 +1552,87 @@ export namespace Prisma {
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    firstname?: boolean
+    lastname?: boolean
     email?: boolean
     password?: boolean
     displayName?: boolean
-    picture?: boolean
+    avatar?: boolean
+    phone?: boolean
     role?: boolean
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
     method?: boolean
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    firstname?: boolean
+    lastname?: boolean
     email?: boolean
     password?: boolean
     displayName?: boolean
-    picture?: boolean
+    avatar?: boolean
+    phone?: boolean
     role?: boolean
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
     method?: boolean
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    firstname?: boolean
+    lastname?: boolean
     email?: boolean
     password?: boolean
     displayName?: boolean
-    picture?: boolean
+    avatar?: boolean
+    phone?: boolean
     role?: boolean
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
     method?: boolean
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
+    firstname?: boolean
+    lastname?: boolean
     email?: boolean
     password?: boolean
     displayName?: boolean
-    picture?: boolean
+    avatar?: boolean
+    phone?: boolean
     role?: boolean
-    isVerified?: boolean
-    isTwoFactorEnabled?: boolean
     method?: boolean
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "displayName" | "picture" | "role" | "isVerified" | "isTwoFactorEnabled" | "method" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "displayName" | "avatar" | "phone" | "role" | "method" | "isVerified" | "isActive" | "isTwoFactorEnabled" | "lastLogin" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1393,17 +1642,23 @@ export namespace Prisma {
     name: "User"
     objects: {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
+      refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      firstname: string | null
+      lastname: string | null
       email: string
-      password: string
-      displayName: string
-      picture: string | null
+      password: string | null
+      displayName: string | null
+      avatar: string | null
+      phone: string | null
       role: $Enums.UserRole
-      isVerified: boolean
-      isTwoFactorEnabled: boolean
       method: $Enums.AuthMethod
+      isVerified: boolean
+      isActive: boolean
+      isTwoFactorEnabled: boolean
+      lastLogin: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1801,6 +2056,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1831,14 +2087,19 @@ export namespace Prisma {
    */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
+    readonly firstname: FieldRef<"User", 'String'>
+    readonly lastname: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly displayName: FieldRef<"User", 'String'>
-    readonly picture: FieldRef<"User", 'String'>
+    readonly avatar: FieldRef<"User", 'String'>
+    readonly phone: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
-    readonly isVerified: FieldRef<"User", 'Boolean'>
-    readonly isTwoFactorEnabled: FieldRef<"User", 'Boolean'>
     readonly method: FieldRef<"User", 'AuthMethod'>
+    readonly isVerified: FieldRef<"User", 'Boolean'>
+    readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly isTwoFactorEnabled: FieldRef<"User", 'Boolean'>
+    readonly lastLogin: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -2253,6 +2514,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.refreshTokens
+   */
+  export type User$refreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    where?: RefreshTokenWhereInput
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    cursor?: RefreshTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2284,20 +2569,24 @@ export namespace Prisma {
   }
 
   export type AccountAvgAggregateOutputType = {
-    expiresAT: number | null
+    expiresAt: number | null
   }
 
   export type AccountSumAggregateOutputType = {
-    expiresAT: number | null
+    expiresAt: number | null
   }
 
   export type AccountMinAggregateOutputType = {
     id: string | null
     type: string | null
     provider: string | null
-    refreshToken: string | null
+    providerAccountId: string | null
     accessToken: string | null
-    expiresAT: number | null
+    refreshToken: string | null
+    expiresAt: number | null
+    tokenType: string | null
+    scope: string | null
+    idToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2307,9 +2596,13 @@ export namespace Prisma {
     id: string | null
     type: string | null
     provider: string | null
-    refreshToken: string | null
+    providerAccountId: string | null
     accessToken: string | null
-    expiresAT: number | null
+    refreshToken: string | null
+    expiresAt: number | null
+    tokenType: string | null
+    scope: string | null
+    idToken: string | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2319,9 +2612,13 @@ export namespace Prisma {
     id: number
     type: number
     provider: number
-    refreshToken: number
+    providerAccountId: number
     accessToken: number
-    expiresAT: number
+    refreshToken: number
+    expiresAt: number
+    tokenType: number
+    scope: number
+    idToken: number
     createdAt: number
     updatedAt: number
     userId: number
@@ -2330,20 +2627,24 @@ export namespace Prisma {
 
 
   export type AccountAvgAggregateInputType = {
-    expiresAT?: true
+    expiresAt?: true
   }
 
   export type AccountSumAggregateInputType = {
-    expiresAT?: true
+    expiresAt?: true
   }
 
   export type AccountMinAggregateInputType = {
     id?: true
     type?: true
     provider?: true
-    refreshToken?: true
+    providerAccountId?: true
     accessToken?: true
-    expiresAT?: true
+    refreshToken?: true
+    expiresAt?: true
+    tokenType?: true
+    scope?: true
+    idToken?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2353,9 +2654,13 @@ export namespace Prisma {
     id?: true
     type?: true
     provider?: true
-    refreshToken?: true
+    providerAccountId?: true
     accessToken?: true
-    expiresAT?: true
+    refreshToken?: true
+    expiresAt?: true
+    tokenType?: true
+    scope?: true
+    idToken?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2365,9 +2670,13 @@ export namespace Prisma {
     id?: true
     type?: true
     provider?: true
-    refreshToken?: true
+    providerAccountId?: true
     accessToken?: true
-    expiresAT?: true
+    refreshToken?: true
+    expiresAt?: true
+    tokenType?: true
+    scope?: true
+    idToken?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2464,12 +2773,16 @@ export namespace Prisma {
     id: string
     type: string
     provider: string
-    refreshToken: string | null
+    providerAccountId: string
     accessToken: string | null
-    expiresAT: number
+    refreshToken: string | null
+    expiresAt: number | null
+    tokenType: string | null
+    scope: string | null
+    idToken: string | null
     createdAt: Date
     updatedAt: Date
-    userId: string | null
+    userId: string
     _count: AccountCountAggregateOutputType | null
     _avg: AccountAvgAggregateOutputType | null
     _sum: AccountSumAggregateOutputType | null
@@ -2495,79 +2808,99 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     provider?: boolean
-    refreshToken?: boolean
+    providerAccountId?: boolean
     accessToken?: boolean
-    expiresAT?: boolean
+    refreshToken?: boolean
+    expiresAt?: boolean
+    tokenType?: boolean
+    scope?: boolean
+    idToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
     provider?: boolean
-    refreshToken?: boolean
+    providerAccountId?: boolean
     accessToken?: boolean
-    expiresAT?: boolean
+    refreshToken?: boolean
+    expiresAt?: boolean
+    tokenType?: boolean
+    scope?: boolean
+    idToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
     provider?: boolean
-    refreshToken?: boolean
+    providerAccountId?: boolean
     accessToken?: boolean
-    expiresAT?: boolean
+    refreshToken?: boolean
+    expiresAt?: boolean
+    tokenType?: boolean
+    scope?: boolean
+    idToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type AccountSelectScalar = {
     id?: boolean
     type?: boolean
     provider?: boolean
-    refreshToken?: boolean
+    providerAccountId?: boolean
     accessToken?: boolean
-    expiresAT?: boolean
+    refreshToken?: boolean
+    expiresAt?: boolean
+    tokenType?: boolean
+    scope?: boolean
+    idToken?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "provider" | "refreshToken" | "accessToken" | "expiresAT" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["account"]>
+  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "provider" | "providerAccountId" | "accessToken" | "refreshToken" | "expiresAt" | "tokenType" | "scope" | "idToken" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["account"]>
   export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Account$userArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Account"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: string
       provider: string
-      refreshToken: string | null
+      providerAccountId: string
       accessToken: string | null
-      expiresAT: number
+      refreshToken: string | null
+      expiresAt: number | null
+      tokenType: string | null
+      scope: string | null
+      idToken: string | null
       createdAt: Date
       updatedAt: Date
-      userId: string | null
+      userId: string
     }, ExtArgs["result"]["account"]>
     composites: {}
   }
@@ -2962,7 +3295,7 @@ export namespace Prisma {
    */
   export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Account$userArgs<ExtArgs> = {}>(args?: Subset<T, Account$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2995,9 +3328,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Account", 'String'>
     readonly type: FieldRef<"Account", 'String'>
     readonly provider: FieldRef<"Account", 'String'>
-    readonly refreshToken: FieldRef<"Account", 'String'>
+    readonly providerAccountId: FieldRef<"Account", 'String'>
     readonly accessToken: FieldRef<"Account", 'String'>
-    readonly expiresAT: FieldRef<"Account", 'Int'>
+    readonly refreshToken: FieldRef<"Account", 'String'>
+    readonly expiresAt: FieldRef<"Account", 'Int'>
+    readonly tokenType: FieldRef<"Account", 'String'>
+    readonly scope: FieldRef<"Account", 'String'>
+    readonly idToken: FieldRef<"Account", 'String'>
     readonly createdAt: FieldRef<"Account", 'DateTime'>
     readonly updatedAt: FieldRef<"Account", 'DateTime'>
     readonly userId: FieldRef<"Account", 'String'>
@@ -3397,25 +3734,6 @@ export namespace Prisma {
   }
 
   /**
-   * Account.user
-   */
-  export type Account$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
    * Account without action
    */
   export type AccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3435,6 +3753,1116 @@ export namespace Prisma {
 
 
   /**
+   * Model RefreshToken
+   */
+
+  export type AggregateRefreshToken = {
+    _count: RefreshTokenCountAggregateOutputType | null
+    _min: RefreshTokenMinAggregateOutputType | null
+    _max: RefreshTokenMaxAggregateOutputType | null
+  }
+
+  export type RefreshTokenMinAggregateOutputType = {
+    id: string | null
+    token: string | null
+    expiresAt: Date | null
+    isRevoked: boolean | null
+    userAgent: string | null
+    ipAddress: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RefreshTokenMaxAggregateOutputType = {
+    id: string | null
+    token: string | null
+    expiresAt: Date | null
+    isRevoked: boolean | null
+    userAgent: string | null
+    ipAddress: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RefreshTokenCountAggregateOutputType = {
+    id: number
+    token: number
+    expiresAt: number
+    isRevoked: number
+    userAgent: number
+    ipAddress: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RefreshTokenMinAggregateInputType = {
+    id?: true
+    token?: true
+    expiresAt?: true
+    isRevoked?: true
+    userAgent?: true
+    ipAddress?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RefreshTokenMaxAggregateInputType = {
+    id?: true
+    token?: true
+    expiresAt?: true
+    isRevoked?: true
+    userAgent?: true
+    ipAddress?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RefreshTokenCountAggregateInputType = {
+    id?: true
+    token?: true
+    expiresAt?: true
+    isRevoked?: true
+    userAgent?: true
+    ipAddress?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RefreshTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RefreshToken to aggregate.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RefreshTokens
+    **/
+    _count?: true | RefreshTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RefreshTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RefreshTokenMaxAggregateInputType
+  }
+
+  export type GetRefreshTokenAggregateType<T extends RefreshTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateRefreshToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRefreshToken[P]>
+      : GetScalarType<T[P], AggregateRefreshToken[P]>
+  }
+
+
+
+
+  export type RefreshTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefreshTokenWhereInput
+    orderBy?: RefreshTokenOrderByWithAggregationInput | RefreshTokenOrderByWithAggregationInput[]
+    by: RefreshTokenScalarFieldEnum[] | RefreshTokenScalarFieldEnum
+    having?: RefreshTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RefreshTokenCountAggregateInputType | true
+    _min?: RefreshTokenMinAggregateInputType
+    _max?: RefreshTokenMaxAggregateInputType
+  }
+
+  export type RefreshTokenGroupByOutputType = {
+    id: string
+    token: string
+    expiresAt: Date
+    isRevoked: boolean
+    userAgent: string | null
+    ipAddress: string | null
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: RefreshTokenCountAggregateOutputType | null
+    _min: RefreshTokenMinAggregateOutputType | null
+    _max: RefreshTokenMaxAggregateOutputType | null
+  }
+
+  type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RefreshTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RefreshTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RefreshTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], RefreshTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RefreshTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    isRevoked?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    isRevoked?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    isRevoked?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectScalar = {
+    id?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    isRevoked?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RefreshTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "token" | "expiresAt" | "isRevoked" | "userAgent" | "ipAddress" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["refreshToken"]>
+  export type RefreshTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RefreshTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RefreshTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RefreshTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RefreshToken"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      token: string
+      expiresAt: Date
+      isRevoked: boolean
+      userAgent: string | null
+      ipAddress: string | null
+      userId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["refreshToken"]>
+    composites: {}
+  }
+
+  type RefreshTokenGetPayload<S extends boolean | null | undefined | RefreshTokenDefaultArgs> = $Result.GetResult<Prisma.$RefreshTokenPayload, S>
+
+  type RefreshTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RefreshTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RefreshTokenCountAggregateInputType | true
+    }
+
+  export interface RefreshTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RefreshToken'], meta: { name: 'RefreshToken' } }
+    /**
+     * Find zero or one RefreshToken that matches the filter.
+     * @param {RefreshTokenFindUniqueArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RefreshTokenFindUniqueArgs>(args: SelectSubset<T, RefreshTokenFindUniqueArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RefreshToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RefreshTokenFindUniqueOrThrowArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RefreshTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, RefreshTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RefreshToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindFirstArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RefreshTokenFindFirstArgs>(args?: SelectSubset<T, RefreshTokenFindFirstArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RefreshToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindFirstOrThrowArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RefreshTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, RefreshTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RefreshTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RefreshTokens
+     * const refreshTokens = await prisma.refreshToken.findMany()
+     * 
+     * // Get first 10 RefreshTokens
+     * const refreshTokens = await prisma.refreshToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RefreshTokenFindManyArgs>(args?: SelectSubset<T, RefreshTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RefreshToken.
+     * @param {RefreshTokenCreateArgs} args - Arguments to create a RefreshToken.
+     * @example
+     * // Create one RefreshToken
+     * const RefreshToken = await prisma.refreshToken.create({
+     *   data: {
+     *     // ... data to create a RefreshToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends RefreshTokenCreateArgs>(args: SelectSubset<T, RefreshTokenCreateArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RefreshTokens.
+     * @param {RefreshTokenCreateManyArgs} args - Arguments to create many RefreshTokens.
+     * @example
+     * // Create many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RefreshTokenCreateManyArgs>(args?: SelectSubset<T, RefreshTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RefreshTokens and returns the data saved in the database.
+     * @param {RefreshTokenCreateManyAndReturnArgs} args - Arguments to create many RefreshTokens.
+     * @example
+     * // Create many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RefreshTokens and only return the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RefreshTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, RefreshTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RefreshToken.
+     * @param {RefreshTokenDeleteArgs} args - Arguments to delete one RefreshToken.
+     * @example
+     * // Delete one RefreshToken
+     * const RefreshToken = await prisma.refreshToken.delete({
+     *   where: {
+     *     // ... filter to delete one RefreshToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RefreshTokenDeleteArgs>(args: SelectSubset<T, RefreshTokenDeleteArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RefreshToken.
+     * @param {RefreshTokenUpdateArgs} args - Arguments to update one RefreshToken.
+     * @example
+     * // Update one RefreshToken
+     * const refreshToken = await prisma.refreshToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RefreshTokenUpdateArgs>(args: SelectSubset<T, RefreshTokenUpdateArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RefreshTokens.
+     * @param {RefreshTokenDeleteManyArgs} args - Arguments to filter RefreshTokens to delete.
+     * @example
+     * // Delete a few RefreshTokens
+     * const { count } = await prisma.refreshToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RefreshTokenDeleteManyArgs>(args?: SelectSubset<T, RefreshTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RefreshTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RefreshTokenUpdateManyArgs>(args: SelectSubset<T, RefreshTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RefreshTokens and returns the data updated in the database.
+     * @param {RefreshTokenUpdateManyAndReturnArgs} args - Arguments to update many RefreshTokens.
+     * @example
+     * // Update many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RefreshTokens and only return the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RefreshTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, RefreshTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RefreshToken.
+     * @param {RefreshTokenUpsertArgs} args - Arguments to update or create a RefreshToken.
+     * @example
+     * // Update or create a RefreshToken
+     * const refreshToken = await prisma.refreshToken.upsert({
+     *   create: {
+     *     // ... data to create a RefreshToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RefreshToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RefreshTokenUpsertArgs>(args: SelectSubset<T, RefreshTokenUpsertArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RefreshTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenCountArgs} args - Arguments to filter RefreshTokens to count.
+     * @example
+     * // Count the number of RefreshTokens
+     * const count = await prisma.refreshToken.count({
+     *   where: {
+     *     // ... the filter for the RefreshTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends RefreshTokenCountArgs>(
+      args?: Subset<T, RefreshTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RefreshTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RefreshToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RefreshTokenAggregateArgs>(args: Subset<T, RefreshTokenAggregateArgs>): Prisma.PrismaPromise<GetRefreshTokenAggregateType<T>>
+
+    /**
+     * Group by RefreshToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RefreshTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RefreshTokenGroupByArgs['orderBy'] }
+        : { orderBy?: RefreshTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RefreshTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRefreshTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RefreshToken model
+   */
+  readonly fields: RefreshTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RefreshToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RefreshToken model
+   */
+  interface RefreshTokenFieldRefs {
+    readonly id: FieldRef<"RefreshToken", 'String'>
+    readonly token: FieldRef<"RefreshToken", 'String'>
+    readonly expiresAt: FieldRef<"RefreshToken", 'DateTime'>
+    readonly isRevoked: FieldRef<"RefreshToken", 'Boolean'>
+    readonly userAgent: FieldRef<"RefreshToken", 'String'>
+    readonly ipAddress: FieldRef<"RefreshToken", 'String'>
+    readonly userId: FieldRef<"RefreshToken", 'String'>
+    readonly createdAt: FieldRef<"RefreshToken", 'DateTime'>
+    readonly updatedAt: FieldRef<"RefreshToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RefreshToken findUnique
+   */
+  export type RefreshTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken findUniqueOrThrow
+   */
+  export type RefreshTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken findFirst
+   */
+  export type RefreshTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RefreshTokens.
+     */
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken findFirstOrThrow
+   */
+  export type RefreshTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RefreshTokens.
+     */
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken findMany
+   */
+  export type RefreshTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshTokens to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken create
+   */
+  export type RefreshTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RefreshToken.
+     */
+    data: XOR<RefreshTokenCreateInput, RefreshTokenUncheckedCreateInput>
+  }
+
+  /**
+   * RefreshToken createMany
+   */
+  export type RefreshTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RefreshTokens.
+     */
+    data: RefreshTokenCreateManyInput | RefreshTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RefreshToken createManyAndReturn
+   */
+  export type RefreshTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many RefreshTokens.
+     */
+    data: RefreshTokenCreateManyInput | RefreshTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RefreshToken update
+   */
+  export type RefreshTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RefreshToken.
+     */
+    data: XOR<RefreshTokenUpdateInput, RefreshTokenUncheckedUpdateInput>
+    /**
+     * Choose, which RefreshToken to update.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken updateMany
+   */
+  export type RefreshTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RefreshTokens.
+     */
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which RefreshTokens to update
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RefreshToken updateManyAndReturn
+   */
+  export type RefreshTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update RefreshTokens.
+     */
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which RefreshTokens to update
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RefreshToken upsert
+   */
+  export type RefreshTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RefreshToken to update in case it exists.
+     */
+    where: RefreshTokenWhereUniqueInput
+    /**
+     * In case the RefreshToken found by the `where` argument doesn't exist, create a new RefreshToken with this data.
+     */
+    create: XOR<RefreshTokenCreateInput, RefreshTokenUncheckedCreateInput>
+    /**
+     * In case the RefreshToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RefreshTokenUpdateInput, RefreshTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * RefreshToken delete
+   */
+  export type RefreshTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter which RefreshToken to delete.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken deleteMany
+   */
+  export type RefreshTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RefreshTokens to delete
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RefreshToken without action
+   */
+  export type RefreshTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Token
    */
 
@@ -3449,7 +4877,9 @@ export namespace Prisma {
     email: string | null
     token: string | null
     type: $Enums.TokenType | null
-    expiresIn: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TokenMaxAggregateOutputType = {
@@ -3457,7 +4887,9 @@ export namespace Prisma {
     email: string | null
     token: string | null
     type: $Enums.TokenType | null
-    expiresIn: Date | null
+    expiresAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type TokenCountAggregateOutputType = {
@@ -3465,7 +4897,9 @@ export namespace Prisma {
     email: number
     token: number
     type: number
-    expiresIn: number
+    expiresAt: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -3475,7 +4909,9 @@ export namespace Prisma {
     email?: true
     token?: true
     type?: true
-    expiresIn?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TokenMaxAggregateInputType = {
@@ -3483,7 +4919,9 @@ export namespace Prisma {
     email?: true
     token?: true
     type?: true
-    expiresIn?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type TokenCountAggregateInputType = {
@@ -3491,7 +4929,9 @@ export namespace Prisma {
     email?: true
     token?: true
     type?: true
-    expiresIn?: true
+    expiresAt?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -3572,7 +5012,9 @@ export namespace Prisma {
     email: string
     token: string
     type: $Enums.TokenType
-    expiresIn: Date
+    expiresAt: Date
+    createdAt: Date
+    updatedAt: Date
     _count: TokenCountAggregateOutputType | null
     _min: TokenMinAggregateOutputType | null
     _max: TokenMaxAggregateOutputType | null
@@ -3597,7 +5039,9 @@ export namespace Prisma {
     email?: boolean
     token?: boolean
     type?: boolean
-    expiresIn?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["token"]>
 
   export type TokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3605,7 +5049,9 @@ export namespace Prisma {
     email?: boolean
     token?: boolean
     type?: boolean
-    expiresIn?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["token"]>
 
   export type TokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3613,7 +5059,9 @@ export namespace Prisma {
     email?: boolean
     token?: boolean
     type?: boolean
-    expiresIn?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["token"]>
 
   export type TokenSelectScalar = {
@@ -3621,10 +5069,12 @@ export namespace Prisma {
     email?: boolean
     token?: boolean
     type?: boolean
-    expiresIn?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type TokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token" | "type" | "expiresIn", ExtArgs["result"]["token"]>
+  export type TokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token" | "type" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["token"]>
 
   export type $TokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Token"
@@ -3634,7 +5084,9 @@ export namespace Prisma {
       email: string
       token: string
       type: $Enums.TokenType
-      expiresIn: Date
+      expiresAt: Date
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["token"]>
     composites: {}
   }
@@ -4062,7 +5514,9 @@ export namespace Prisma {
     readonly email: FieldRef<"Token", 'String'>
     readonly token: FieldRef<"Token", 'String'>
     readonly type: FieldRef<"Token", 'TokenType'>
-    readonly expiresIn: FieldRef<"Token", 'DateTime'>
+    readonly expiresAt: FieldRef<"Token", 'DateTime'>
+    readonly createdAt: FieldRef<"Token", 'DateTime'>
+    readonly updatedAt: FieldRef<"Token", 'DateTime'>
   }
     
 
@@ -4430,6 +5884,1027 @@ export namespace Prisma {
 
 
   /**
+   * Model LoginAttempt
+   */
+
+  export type AggregateLoginAttempt = {
+    _count: LoginAttemptCountAggregateOutputType | null
+    _min: LoginAttemptMinAggregateOutputType | null
+    _max: LoginAttemptMaxAggregateOutputType | null
+  }
+
+  export type LoginAttemptMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    success: boolean | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type LoginAttemptMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    success: boolean | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type LoginAttemptCountAggregateOutputType = {
+    id: number
+    email: number
+    ipAddress: number
+    userAgent: number
+    success: number
+    reason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LoginAttemptMinAggregateInputType = {
+    id?: true
+    email?: true
+    ipAddress?: true
+    userAgent?: true
+    success?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type LoginAttemptMaxAggregateInputType = {
+    id?: true
+    email?: true
+    ipAddress?: true
+    userAgent?: true
+    success?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type LoginAttemptCountAggregateInputType = {
+    id?: true
+    email?: true
+    ipAddress?: true
+    userAgent?: true
+    success?: true
+    reason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LoginAttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LoginAttempt to aggregate.
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LoginAttempts to fetch.
+     */
+    orderBy?: LoginAttemptOrderByWithRelationInput | LoginAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LoginAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LoginAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LoginAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LoginAttempts
+    **/
+    _count?: true | LoginAttemptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LoginAttemptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LoginAttemptMaxAggregateInputType
+  }
+
+  export type GetLoginAttemptAggregateType<T extends LoginAttemptAggregateArgs> = {
+        [P in keyof T & keyof AggregateLoginAttempt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLoginAttempt[P]>
+      : GetScalarType<T[P], AggregateLoginAttempt[P]>
+  }
+
+
+
+
+  export type LoginAttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LoginAttemptWhereInput
+    orderBy?: LoginAttemptOrderByWithAggregationInput | LoginAttemptOrderByWithAggregationInput[]
+    by: LoginAttemptScalarFieldEnum[] | LoginAttemptScalarFieldEnum
+    having?: LoginAttemptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LoginAttemptCountAggregateInputType | true
+    _min?: LoginAttemptMinAggregateInputType
+    _max?: LoginAttemptMaxAggregateInputType
+  }
+
+  export type LoginAttemptGroupByOutputType = {
+    id: string
+    email: string
+    ipAddress: string
+    userAgent: string | null
+    success: boolean
+    reason: string | null
+    createdAt: Date
+    _count: LoginAttemptCountAggregateOutputType | null
+    _min: LoginAttemptMinAggregateOutputType | null
+    _max: LoginAttemptMaxAggregateOutputType | null
+  }
+
+  type GetLoginAttemptGroupByPayload<T extends LoginAttemptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LoginAttemptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LoginAttemptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LoginAttemptGroupByOutputType[P]>
+            : GetScalarType<T[P], LoginAttemptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LoginAttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    success?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["loginAttempt"]>
+
+  export type LoginAttemptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    success?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["loginAttempt"]>
+
+  export type LoginAttemptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    success?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["loginAttempt"]>
+
+  export type LoginAttemptSelectScalar = {
+    id?: boolean
+    email?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    success?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }
+
+  export type LoginAttemptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "ipAddress" | "userAgent" | "success" | "reason" | "createdAt", ExtArgs["result"]["loginAttempt"]>
+
+  export type $LoginAttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LoginAttempt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      ipAddress: string
+      userAgent: string | null
+      success: boolean
+      reason: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["loginAttempt"]>
+    composites: {}
+  }
+
+  type LoginAttemptGetPayload<S extends boolean | null | undefined | LoginAttemptDefaultArgs> = $Result.GetResult<Prisma.$LoginAttemptPayload, S>
+
+  type LoginAttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LoginAttemptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LoginAttemptCountAggregateInputType | true
+    }
+
+  export interface LoginAttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LoginAttempt'], meta: { name: 'LoginAttempt' } }
+    /**
+     * Find zero or one LoginAttempt that matches the filter.
+     * @param {LoginAttemptFindUniqueArgs} args - Arguments to find a LoginAttempt
+     * @example
+     * // Get one LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LoginAttemptFindUniqueArgs>(args: SelectSubset<T, LoginAttemptFindUniqueArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LoginAttempt that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LoginAttemptFindUniqueOrThrowArgs} args - Arguments to find a LoginAttempt
+     * @example
+     * // Get one LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LoginAttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, LoginAttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LoginAttempt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptFindFirstArgs} args - Arguments to find a LoginAttempt
+     * @example
+     * // Get one LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LoginAttemptFindFirstArgs>(args?: SelectSubset<T, LoginAttemptFindFirstArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LoginAttempt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptFindFirstOrThrowArgs} args - Arguments to find a LoginAttempt
+     * @example
+     * // Get one LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LoginAttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, LoginAttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LoginAttempts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LoginAttempts
+     * const loginAttempts = await prisma.loginAttempt.findMany()
+     * 
+     * // Get first 10 LoginAttempts
+     * const loginAttempts = await prisma.loginAttempt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const loginAttemptWithIdOnly = await prisma.loginAttempt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LoginAttemptFindManyArgs>(args?: SelectSubset<T, LoginAttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LoginAttempt.
+     * @param {LoginAttemptCreateArgs} args - Arguments to create a LoginAttempt.
+     * @example
+     * // Create one LoginAttempt
+     * const LoginAttempt = await prisma.loginAttempt.create({
+     *   data: {
+     *     // ... data to create a LoginAttempt
+     *   }
+     * })
+     * 
+     */
+    create<T extends LoginAttemptCreateArgs>(args: SelectSubset<T, LoginAttemptCreateArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LoginAttempts.
+     * @param {LoginAttemptCreateManyArgs} args - Arguments to create many LoginAttempts.
+     * @example
+     * // Create many LoginAttempts
+     * const loginAttempt = await prisma.loginAttempt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LoginAttemptCreateManyArgs>(args?: SelectSubset<T, LoginAttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LoginAttempts and returns the data saved in the database.
+     * @param {LoginAttemptCreateManyAndReturnArgs} args - Arguments to create many LoginAttempts.
+     * @example
+     * // Create many LoginAttempts
+     * const loginAttempt = await prisma.loginAttempt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LoginAttempts and only return the `id`
+     * const loginAttemptWithIdOnly = await prisma.loginAttempt.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LoginAttemptCreateManyAndReturnArgs>(args?: SelectSubset<T, LoginAttemptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LoginAttempt.
+     * @param {LoginAttemptDeleteArgs} args - Arguments to delete one LoginAttempt.
+     * @example
+     * // Delete one LoginAttempt
+     * const LoginAttempt = await prisma.loginAttempt.delete({
+     *   where: {
+     *     // ... filter to delete one LoginAttempt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LoginAttemptDeleteArgs>(args: SelectSubset<T, LoginAttemptDeleteArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LoginAttempt.
+     * @param {LoginAttemptUpdateArgs} args - Arguments to update one LoginAttempt.
+     * @example
+     * // Update one LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LoginAttemptUpdateArgs>(args: SelectSubset<T, LoginAttemptUpdateArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LoginAttempts.
+     * @param {LoginAttemptDeleteManyArgs} args - Arguments to filter LoginAttempts to delete.
+     * @example
+     * // Delete a few LoginAttempts
+     * const { count } = await prisma.loginAttempt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LoginAttemptDeleteManyArgs>(args?: SelectSubset<T, LoginAttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LoginAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LoginAttempts
+     * const loginAttempt = await prisma.loginAttempt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LoginAttemptUpdateManyArgs>(args: SelectSubset<T, LoginAttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LoginAttempts and returns the data updated in the database.
+     * @param {LoginAttemptUpdateManyAndReturnArgs} args - Arguments to update many LoginAttempts.
+     * @example
+     * // Update many LoginAttempts
+     * const loginAttempt = await prisma.loginAttempt.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LoginAttempts and only return the `id`
+     * const loginAttemptWithIdOnly = await prisma.loginAttempt.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LoginAttemptUpdateManyAndReturnArgs>(args: SelectSubset<T, LoginAttemptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LoginAttempt.
+     * @param {LoginAttemptUpsertArgs} args - Arguments to update or create a LoginAttempt.
+     * @example
+     * // Update or create a LoginAttempt
+     * const loginAttempt = await prisma.loginAttempt.upsert({
+     *   create: {
+     *     // ... data to create a LoginAttempt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LoginAttempt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LoginAttemptUpsertArgs>(args: SelectSubset<T, LoginAttemptUpsertArgs<ExtArgs>>): Prisma__LoginAttemptClient<$Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LoginAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptCountArgs} args - Arguments to filter LoginAttempts to count.
+     * @example
+     * // Count the number of LoginAttempts
+     * const count = await prisma.loginAttempt.count({
+     *   where: {
+     *     // ... the filter for the LoginAttempts we want to count
+     *   }
+     * })
+    **/
+    count<T extends LoginAttemptCountArgs>(
+      args?: Subset<T, LoginAttemptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LoginAttemptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LoginAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LoginAttemptAggregateArgs>(args: Subset<T, LoginAttemptAggregateArgs>): Prisma.PrismaPromise<GetLoginAttemptAggregateType<T>>
+
+    /**
+     * Group by LoginAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LoginAttemptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LoginAttemptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LoginAttemptGroupByArgs['orderBy'] }
+        : { orderBy?: LoginAttemptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LoginAttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLoginAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LoginAttempt model
+   */
+  readonly fields: LoginAttemptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LoginAttempt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LoginAttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LoginAttempt model
+   */
+  interface LoginAttemptFieldRefs {
+    readonly id: FieldRef<"LoginAttempt", 'String'>
+    readonly email: FieldRef<"LoginAttempt", 'String'>
+    readonly ipAddress: FieldRef<"LoginAttempt", 'String'>
+    readonly userAgent: FieldRef<"LoginAttempt", 'String'>
+    readonly success: FieldRef<"LoginAttempt", 'Boolean'>
+    readonly reason: FieldRef<"LoginAttempt", 'String'>
+    readonly createdAt: FieldRef<"LoginAttempt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LoginAttempt findUnique
+   */
+  export type LoginAttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which LoginAttempt to fetch.
+     */
+    where: LoginAttemptWhereUniqueInput
+  }
+
+  /**
+   * LoginAttempt findUniqueOrThrow
+   */
+  export type LoginAttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which LoginAttempt to fetch.
+     */
+    where: LoginAttemptWhereUniqueInput
+  }
+
+  /**
+   * LoginAttempt findFirst
+   */
+  export type LoginAttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which LoginAttempt to fetch.
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LoginAttempts to fetch.
+     */
+    orderBy?: LoginAttemptOrderByWithRelationInput | LoginAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LoginAttempts.
+     */
+    cursor?: LoginAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LoginAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LoginAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LoginAttempts.
+     */
+    distinct?: LoginAttemptScalarFieldEnum | LoginAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * LoginAttempt findFirstOrThrow
+   */
+  export type LoginAttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which LoginAttempt to fetch.
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LoginAttempts to fetch.
+     */
+    orderBy?: LoginAttemptOrderByWithRelationInput | LoginAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LoginAttempts.
+     */
+    cursor?: LoginAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LoginAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LoginAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LoginAttempts.
+     */
+    distinct?: LoginAttemptScalarFieldEnum | LoginAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * LoginAttempt findMany
+   */
+  export type LoginAttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which LoginAttempts to fetch.
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LoginAttempts to fetch.
+     */
+    orderBy?: LoginAttemptOrderByWithRelationInput | LoginAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LoginAttempts.
+     */
+    cursor?: LoginAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LoginAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LoginAttempts.
+     */
+    skip?: number
+    distinct?: LoginAttemptScalarFieldEnum | LoginAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * LoginAttempt create
+   */
+  export type LoginAttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * The data needed to create a LoginAttempt.
+     */
+    data: XOR<LoginAttemptCreateInput, LoginAttemptUncheckedCreateInput>
+  }
+
+  /**
+   * LoginAttempt createMany
+   */
+  export type LoginAttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LoginAttempts.
+     */
+    data: LoginAttemptCreateManyInput | LoginAttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LoginAttempt createManyAndReturn
+   */
+  export type LoginAttemptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to create many LoginAttempts.
+     */
+    data: LoginAttemptCreateManyInput | LoginAttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LoginAttempt update
+   */
+  export type LoginAttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * The data needed to update a LoginAttempt.
+     */
+    data: XOR<LoginAttemptUpdateInput, LoginAttemptUncheckedUpdateInput>
+    /**
+     * Choose, which LoginAttempt to update.
+     */
+    where: LoginAttemptWhereUniqueInput
+  }
+
+  /**
+   * LoginAttempt updateMany
+   */
+  export type LoginAttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LoginAttempts.
+     */
+    data: XOR<LoginAttemptUpdateManyMutationInput, LoginAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which LoginAttempts to update
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * Limit how many LoginAttempts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LoginAttempt updateManyAndReturn
+   */
+  export type LoginAttemptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to update LoginAttempts.
+     */
+    data: XOR<LoginAttemptUpdateManyMutationInput, LoginAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which LoginAttempts to update
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * Limit how many LoginAttempts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LoginAttempt upsert
+   */
+  export type LoginAttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * The filter to search for the LoginAttempt to update in case it exists.
+     */
+    where: LoginAttemptWhereUniqueInput
+    /**
+     * In case the LoginAttempt found by the `where` argument doesn't exist, create a new LoginAttempt with this data.
+     */
+    create: XOR<LoginAttemptCreateInput, LoginAttemptUncheckedCreateInput>
+    /**
+     * In case the LoginAttempt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LoginAttemptUpdateInput, LoginAttemptUncheckedUpdateInput>
+  }
+
+  /**
+   * LoginAttempt delete
+   */
+  export type LoginAttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+    /**
+     * Filter which LoginAttempt to delete.
+     */
+    where: LoginAttemptWhereUniqueInput
+  }
+
+  /**
+   * LoginAttempt deleteMany
+   */
+  export type LoginAttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LoginAttempts to delete
+     */
+    where?: LoginAttemptWhereInput
+    /**
+     * Limit how many LoginAttempts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LoginAttempt without action
+   */
+  export type LoginAttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginAttempt
+     */
+    select?: LoginAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginAttempt
+     */
+    omit?: LoginAttemptOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4445,14 +6920,19 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
+    firstname: 'firstname',
+    lastname: 'lastname',
     email: 'email',
     password: 'password',
     displayName: 'displayName',
-    picture: 'picture',
+    avatar: 'avatar',
+    phone: 'phone',
     role: 'role',
-    isVerified: 'isVerified',
-    isTwoFactorEnabled: 'isTwoFactorEnabled',
     method: 'method',
+    isVerified: 'isVerified',
+    isActive: 'isActive',
+    isTwoFactorEnabled: 'isTwoFactorEnabled',
+    lastLogin: 'lastLogin',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -4464,9 +6944,13 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     provider: 'provider',
-    refreshToken: 'refreshToken',
+    providerAccountId: 'providerAccountId',
     accessToken: 'accessToken',
-    expiresAT: 'expiresAT',
+    refreshToken: 'refreshToken',
+    expiresAt: 'expiresAt',
+    tokenType: 'tokenType',
+    scope: 'scope',
+    idToken: 'idToken',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId'
@@ -4475,15 +6959,45 @@ export namespace Prisma {
   export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
+  export const RefreshTokenScalarFieldEnum: {
+    id: 'id',
+    token: 'token',
+    expiresAt: 'expiresAt',
+    isRevoked: 'isRevoked',
+    userAgent: 'userAgent',
+    ipAddress: 'ipAddress',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
   export const TokenScalarFieldEnum: {
     id: 'id',
     email: 'email',
     token: 'token',
     type: 'type',
-    expiresIn: 'expiresIn'
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type TokenScalarFieldEnum = (typeof TokenScalarFieldEnum)[keyof typeof TokenScalarFieldEnum]
+
+
+  export const LoginAttemptScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    success: 'success',
+    reason: 'reason',
+    createdAt: 'createdAt'
+  };
+
+  export type LoginAttemptScalarFieldEnum = (typeof LoginAttemptScalarFieldEnum)[keyof typeof LoginAttemptScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4544,13 +7058,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'AuthMethod'
    */
   export type EnumAuthMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthMethod'>
@@ -4561,6 +7068,13 @@ export namespace Prisma {
    * Reference to a field of type 'AuthMethod[]'
    */
   export type ListEnumAuthMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthMethod[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -4628,32 +7142,44 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
+    firstname?: StringNullableFilter<"User"> | string | null
+    lastname?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-    displayName?: StringFilter<"User"> | string
-    picture?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
+    displayName?: StringNullableFilter<"User"> | string | null
+    avatar?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
-    isVerified?: BoolFilter<"User"> | boolean
-    isTwoFactorEnabled?: BoolFilter<"User"> | boolean
     method?: EnumAuthMethodFilter<"User"> | $Enums.AuthMethod
+    isVerified?: BoolFilter<"User"> | boolean
+    isActive?: BoolFilter<"User"> | boolean
+    isTwoFactorEnabled?: BoolFilter<"User"> | boolean
+    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
+    firstname?: SortOrderInput | SortOrder
+    lastname?: SortOrderInput | SortOrder
     email?: SortOrder
-    password?: SortOrder
-    displayName?: SortOrder
-    picture?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
+    displayName?: SortOrderInput | SortOrder
+    avatar?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     role?: SortOrder
-    isVerified?: SortOrder
-    isTwoFactorEnabled?: SortOrder
     method?: SortOrder
+    isVerified?: SortOrder
+    isActive?: SortOrder
+    isTwoFactorEnabled?: SortOrder
+    lastLogin?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
+    refreshTokens?: RefreshTokenOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4662,28 +7188,39 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    password?: StringFilter<"User"> | string
-    displayName?: StringFilter<"User"> | string
-    picture?: StringNullableFilter<"User"> | string | null
+    firstname?: StringNullableFilter<"User"> | string | null
+    lastname?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
+    displayName?: StringNullableFilter<"User"> | string | null
+    avatar?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
-    isVerified?: BoolFilter<"User"> | boolean
-    isTwoFactorEnabled?: BoolFilter<"User"> | boolean
     method?: EnumAuthMethodFilter<"User"> | $Enums.AuthMethod
+    isVerified?: BoolFilter<"User"> | boolean
+    isActive?: BoolFilter<"User"> | boolean
+    isTwoFactorEnabled?: BoolFilter<"User"> | boolean
+    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
+    firstname?: SortOrderInput | SortOrder
+    lastname?: SortOrderInput | SortOrder
     email?: SortOrder
-    password?: SortOrder
-    displayName?: SortOrder
-    picture?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
+    displayName?: SortOrderInput | SortOrder
+    avatar?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     role?: SortOrder
-    isVerified?: SortOrder
-    isTwoFactorEnabled?: SortOrder
     method?: SortOrder
+    isVerified?: SortOrder
+    isActive?: SortOrder
+    isTwoFactorEnabled?: SortOrder
+    lastLogin?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -4696,14 +7233,19 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
+    firstname?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastname?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
-    displayName?: StringWithAggregatesFilter<"User"> | string
-    picture?: StringNullableWithAggregatesFilter<"User"> | string | null
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
+    displayName?: StringNullableWithAggregatesFilter<"User"> | string | null
+    avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
-    isVerified?: BoolWithAggregatesFilter<"User"> | boolean
-    isTwoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
     method?: EnumAuthMethodWithAggregatesFilter<"User"> | $Enums.AuthMethod
+    isVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    isTwoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
+    lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -4715,54 +7257,71 @@ export namespace Prisma {
     id?: StringFilter<"Account"> | string
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
-    refreshToken?: StringNullableFilter<"Account"> | string | null
+    providerAccountId?: StringFilter<"Account"> | string
     accessToken?: StringNullableFilter<"Account"> | string | null
-    expiresAT?: IntFilter<"Account"> | number
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    expiresAt?: IntNullableFilter<"Account"> | number | null
+    tokenType?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    idToken?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    userId?: StringFilter<"Account"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type AccountOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
     provider?: SortOrder
-    refreshToken?: SortOrderInput | SortOrder
+    providerAccountId?: SortOrder
     accessToken?: SortOrderInput | SortOrder
-    expiresAT?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    tokenType?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    idToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     user?: UserOrderByWithRelationInput
   }
 
   export type AccountWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    provider_providerAccountId?: AccountProviderProviderAccountIdCompoundUniqueInput
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
-    refreshToken?: StringNullableFilter<"Account"> | string | null
+    providerAccountId?: StringFilter<"Account"> | string
     accessToken?: StringNullableFilter<"Account"> | string | null
-    expiresAT?: IntFilter<"Account"> | number
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    expiresAt?: IntNullableFilter<"Account"> | number | null
+    tokenType?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    idToken?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }, "id">
+    userId?: StringFilter<"Account"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "provider_providerAccountId">
 
   export type AccountOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
     provider?: SortOrder
-    refreshToken?: SortOrderInput | SortOrder
+    providerAccountId?: SortOrder
     accessToken?: SortOrderInput | SortOrder
-    expiresAT?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    tokenType?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    idToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     _count?: AccountCountOrderByAggregateInput
     _avg?: AccountAvgOrderByAggregateInput
     _max?: AccountMaxOrderByAggregateInput
@@ -4777,12 +7336,91 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Account"> | string
     type?: StringWithAggregatesFilter<"Account"> | string
     provider?: StringWithAggregatesFilter<"Account"> | string
-    refreshToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    providerAccountId?: StringWithAggregatesFilter<"Account"> | string
     accessToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
-    expiresAT?: IntWithAggregatesFilter<"Account"> | number
+    refreshToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    expiresAt?: IntNullableWithAggregatesFilter<"Account"> | number | null
+    tokenType?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    scope?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    idToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Account"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Account"> | Date | string
-    userId?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    userId?: StringWithAggregatesFilter<"Account"> | string
+  }
+
+  export type RefreshTokenWhereInput = {
+    AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    OR?: RefreshTokenWhereInput[]
+    NOT?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    id?: StringFilter<"RefreshToken"> | string
+    token?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    isRevoked?: BoolFilter<"RefreshToken"> | boolean
+    userAgent?: StringNullableFilter<"RefreshToken"> | string | null
+    ipAddress?: StringNullableFilter<"RefreshToken"> | string | null
+    userId?: StringFilter<"RefreshToken"> | string
+    createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    updatedAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RefreshTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    isRevoked?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    OR?: RefreshTokenWhereInput[]
+    NOT?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    isRevoked?: BoolFilter<"RefreshToken"> | boolean
+    userAgent?: StringNullableFilter<"RefreshToken"> | string | null
+    ipAddress?: StringNullableFilter<"RefreshToken"> | string | null
+    userId?: StringFilter<"RefreshToken"> | string
+    createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    updatedAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "token">
+
+  export type RefreshTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    isRevoked?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RefreshTokenCountOrderByAggregateInput
+    _max?: RefreshTokenMaxOrderByAggregateInput
+    _min?: RefreshTokenMinOrderByAggregateInput
+  }
+
+  export type RefreshTokenScalarWhereWithAggregatesInput = {
+    AND?: RefreshTokenScalarWhereWithAggregatesInput | RefreshTokenScalarWhereWithAggregatesInput[]
+    OR?: RefreshTokenScalarWhereWithAggregatesInput[]
+    NOT?: RefreshTokenScalarWhereWithAggregatesInput | RefreshTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RefreshToken"> | string
+    token?: StringWithAggregatesFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
+    isRevoked?: BoolWithAggregatesFilter<"RefreshToken"> | boolean
+    userAgent?: StringNullableWithAggregatesFilter<"RefreshToken"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"RefreshToken"> | string | null
+    userId?: StringWithAggregatesFilter<"RefreshToken"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
   export type TokenWhereInput = {
@@ -4793,7 +7431,9 @@ export namespace Prisma {
     email?: StringFilter<"Token"> | string
     token?: StringFilter<"Token"> | string
     type?: EnumTokenTypeFilter<"Token"> | $Enums.TokenType
-    expiresIn?: DateTimeFilter<"Token"> | Date | string
+    expiresAt?: DateTimeFilter<"Token"> | Date | string
+    createdAt?: DateTimeFilter<"Token"> | Date | string
+    updatedAt?: DateTimeFilter<"Token"> | Date | string
   }
 
   export type TokenOrderByWithRelationInput = {
@@ -4801,7 +7441,9 @@ export namespace Prisma {
     email?: SortOrder
     token?: SortOrder
     type?: SortOrder
-    expiresIn?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TokenWhereUniqueInput = Prisma.AtLeast<{
@@ -4812,7 +7454,9 @@ export namespace Prisma {
     NOT?: TokenWhereInput | TokenWhereInput[]
     email?: StringFilter<"Token"> | string
     type?: EnumTokenTypeFilter<"Token"> | $Enums.TokenType
-    expiresIn?: DateTimeFilter<"Token"> | Date | string
+    expiresAt?: DateTimeFilter<"Token"> | Date | string
+    createdAt?: DateTimeFilter<"Token"> | Date | string
+    updatedAt?: DateTimeFilter<"Token"> | Date | string
   }, "id" | "token">
 
   export type TokenOrderByWithAggregationInput = {
@@ -4820,7 +7464,9 @@ export namespace Prisma {
     email?: SortOrder
     token?: SortOrder
     type?: SortOrder
-    expiresIn?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: TokenCountOrderByAggregateInput
     _max?: TokenMaxOrderByAggregateInput
     _min?: TokenMinOrderByAggregateInput
@@ -4834,107 +7480,210 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Token"> | string
     token?: StringWithAggregatesFilter<"Token"> | string
     type?: EnumTokenTypeWithAggregatesFilter<"Token"> | $Enums.TokenType
-    expiresIn?: DateTimeWithAggregatesFilter<"Token"> | Date | string
+    expiresAt?: DateTimeWithAggregatesFilter<"Token"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Token"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Token"> | Date | string
+  }
+
+  export type LoginAttemptWhereInput = {
+    AND?: LoginAttemptWhereInput | LoginAttemptWhereInput[]
+    OR?: LoginAttemptWhereInput[]
+    NOT?: LoginAttemptWhereInput | LoginAttemptWhereInput[]
+    id?: StringFilter<"LoginAttempt"> | string
+    email?: StringFilter<"LoginAttempt"> | string
+    ipAddress?: StringFilter<"LoginAttempt"> | string
+    userAgent?: StringNullableFilter<"LoginAttempt"> | string | null
+    success?: BoolFilter<"LoginAttempt"> | boolean
+    reason?: StringNullableFilter<"LoginAttempt"> | string | null
+    createdAt?: DateTimeFilter<"LoginAttempt"> | Date | string
+  }
+
+  export type LoginAttemptOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    success?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LoginAttemptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LoginAttemptWhereInput | LoginAttemptWhereInput[]
+    OR?: LoginAttemptWhereInput[]
+    NOT?: LoginAttemptWhereInput | LoginAttemptWhereInput[]
+    email?: StringFilter<"LoginAttempt"> | string
+    ipAddress?: StringFilter<"LoginAttempt"> | string
+    userAgent?: StringNullableFilter<"LoginAttempt"> | string | null
+    success?: BoolFilter<"LoginAttempt"> | boolean
+    reason?: StringNullableFilter<"LoginAttempt"> | string | null
+    createdAt?: DateTimeFilter<"LoginAttempt"> | Date | string
+  }, "id">
+
+  export type LoginAttemptOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    success?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: LoginAttemptCountOrderByAggregateInput
+    _max?: LoginAttemptMaxOrderByAggregateInput
+    _min?: LoginAttemptMinOrderByAggregateInput
+  }
+
+  export type LoginAttemptScalarWhereWithAggregatesInput = {
+    AND?: LoginAttemptScalarWhereWithAggregatesInput | LoginAttemptScalarWhereWithAggregatesInput[]
+    OR?: LoginAttemptScalarWhereWithAggregatesInput[]
+    NOT?: LoginAttemptScalarWhereWithAggregatesInput | LoginAttemptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LoginAttempt"> | string
+    email?: StringWithAggregatesFilter<"LoginAttempt"> | string
+    ipAddress?: StringWithAggregatesFilter<"LoginAttempt"> | string
+    userAgent?: StringNullableWithAggregatesFilter<"LoginAttempt"> | string | null
+    success?: BoolWithAggregatesFilter<"LoginAttempt"> | boolean
+    reason?: StringNullableWithAggregatesFilter<"LoginAttempt"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"LoginAttempt"> | Date | string
   }
 
   export type UserCreateInput = {
     id?: string
+    firstname?: string | null
+    lastname?: string | null
     email: string
-    password: string
-    displayName: string
-    picture?: string | null
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
     role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
     isVerified?: boolean
+    isActive?: boolean
     isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
+    firstname?: string | null
+    lastname?: string | null
     email: string
-    password: string
-    displayName: string
-    picture?: string | null
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
     role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
     isVerified?: boolean
+    isActive?: boolean
     isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
+    firstname?: string | null
+    lastname?: string | null
     email: string
-    password: string
-    displayName: string
-    picture?: string | null
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
     role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
     isVerified?: boolean
+    isActive?: boolean
     isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4943,69 +7692,93 @@ export namespace Prisma {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
   }
 
   export type AccountUncheckedCreateInput = {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
   }
 
   export type AccountUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
   }
 
   export type AccountUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AccountCreateManyInput = {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: string | null
+    userId: string
   }
 
   export type AccountUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5014,12 +7787,99 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RefreshTokenCreateInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRefreshTokensInput
+  }
+
+  export type RefreshTokenUncheckedCreateInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RefreshTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRefreshTokensNestedInput
+  }
+
+  export type RefreshTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenCreateManyInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RefreshTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TokenCreateInput = {
@@ -5027,7 +7887,9 @@ export namespace Prisma {
     email: string
     token: string
     type: $Enums.TokenType
-    expiresIn: Date | string
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TokenUncheckedCreateInput = {
@@ -5035,7 +7897,9 @@ export namespace Prisma {
     email: string
     token: string
     type: $Enums.TokenType
-    expiresIn: Date | string
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TokenUpdateInput = {
@@ -5043,7 +7907,9 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
-    expiresIn?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TokenUncheckedUpdateInput = {
@@ -5051,7 +7917,9 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
-    expiresIn?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TokenCreateManyInput = {
@@ -5059,7 +7927,9 @@ export namespace Prisma {
     email: string
     token: string
     type: $Enums.TokenType
-    expiresIn: Date | string
+    expiresAt: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TokenUpdateManyMutationInput = {
@@ -5067,7 +7937,9 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
-    expiresIn?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TokenUncheckedUpdateManyInput = {
@@ -5075,7 +7947,79 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     type?: EnumTokenTypeFieldUpdateOperationsInput | $Enums.TokenType
-    expiresIn?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginAttemptCreateInput = {
+    id?: string
+    email: string
+    ipAddress: string
+    userAgent?: string | null
+    success: boolean
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type LoginAttemptUncheckedCreateInput = {
+    id?: string
+    email: string
+    ipAddress: string
+    userAgent?: string | null
+    success: boolean
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type LoginAttemptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    success?: BoolFieldUpdateOperationsInput | boolean
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginAttemptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    success?: BoolFieldUpdateOperationsInput | boolean
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginAttemptCreateManyInput = {
+    id?: string
+    email: string
+    ipAddress: string
+    userAgent?: string | null
+    success: boolean
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type LoginAttemptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    success?: BoolFieldUpdateOperationsInput | boolean
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginAttemptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    success?: BoolFieldUpdateOperationsInput | boolean
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5115,16 +8059,27 @@ export namespace Prisma {
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type EnumAuthMethodFilter<$PrismaModel = never> = {
     equals?: $Enums.AuthMethod | EnumAuthMethodFieldRefInput<$PrismaModel>
     in?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
     notIn?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
     not?: NestedEnumAuthMethodFilter<$PrismaModel> | $Enums.AuthMethod
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -5144,6 +8099,12 @@ export namespace Prisma {
     none?: AccountWhereInput
   }
 
+  export type RefreshTokenListRelationFilter = {
+    every?: RefreshTokenWhereInput
+    some?: RefreshTokenWhereInput
+    none?: RefreshTokenWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -5153,44 +8114,63 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type RefreshTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
+    firstname?: SortOrder
+    lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
     displayName?: SortOrder
-    picture?: SortOrder
+    avatar?: SortOrder
+    phone?: SortOrder
     role?: SortOrder
-    isVerified?: SortOrder
-    isTwoFactorEnabled?: SortOrder
     method?: SortOrder
+    isVerified?: SortOrder
+    isActive?: SortOrder
+    isTwoFactorEnabled?: SortOrder
+    lastLogin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
+    firstname?: SortOrder
+    lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
     displayName?: SortOrder
-    picture?: SortOrder
+    avatar?: SortOrder
+    phone?: SortOrder
     role?: SortOrder
-    isVerified?: SortOrder
-    isTwoFactorEnabled?: SortOrder
     method?: SortOrder
+    isVerified?: SortOrder
+    isActive?: SortOrder
+    isTwoFactorEnabled?: SortOrder
+    lastLogin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
+    firstname?: SortOrder
+    lastname?: SortOrder
     email?: SortOrder
     password?: SortOrder
     displayName?: SortOrder
-    picture?: SortOrder
+    avatar?: SortOrder
+    phone?: SortOrder
     role?: SortOrder
-    isVerified?: SortOrder
-    isTwoFactorEnabled?: SortOrder
     method?: SortOrder
+    isVerified?: SortOrder
+    isActive?: SortOrder
+    isTwoFactorEnabled?: SortOrder
+    lastLogin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5241,14 +8221,6 @@ export namespace Prisma {
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type EnumAuthMethodWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.AuthMethod | EnumAuthMethodFieldRefInput<$PrismaModel>
     in?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
@@ -5257,6 +8229,28 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAuthMethodFilter<$PrismaModel>
     _max?: NestedEnumAuthMethodFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5273,45 +8267,58 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type AccountProviderProviderAccountIdCompoundUniqueInput = {
+    provider: string
+    providerAccountId: string
   }
 
   export type AccountCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     provider?: SortOrder
-    refreshToken?: SortOrder
+    providerAccountId?: SortOrder
     accessToken?: SortOrder
-    expiresAT?: SortOrder
+    refreshToken?: SortOrder
+    expiresAt?: SortOrder
+    tokenType?: SortOrder
+    scope?: SortOrder
+    idToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
   }
 
   export type AccountAvgOrderByAggregateInput = {
-    expiresAT?: SortOrder
+    expiresAt?: SortOrder
   }
 
   export type AccountMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
     provider?: SortOrder
-    refreshToken?: SortOrder
+    providerAccountId?: SortOrder
     accessToken?: SortOrder
-    expiresAT?: SortOrder
+    refreshToken?: SortOrder
+    expiresAt?: SortOrder
+    tokenType?: SortOrder
+    scope?: SortOrder
+    idToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -5321,32 +8328,72 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     provider?: SortOrder
-    refreshToken?: SortOrder
+    providerAccountId?: SortOrder
     accessToken?: SortOrder
-    expiresAT?: SortOrder
+    refreshToken?: SortOrder
+    expiresAt?: SortOrder
+    tokenType?: SortOrder
+    scope?: SortOrder
+    idToken?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
   }
 
   export type AccountSumOrderByAggregateInput = {
-    expiresAT?: SortOrder
+    expiresAt?: SortOrder
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type RefreshTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    isRevoked?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RefreshTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    isRevoked?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RefreshTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    isRevoked?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumTokenTypeFilter<$PrismaModel = never> = {
@@ -5361,7 +8408,9 @@ export namespace Prisma {
     email?: SortOrder
     token?: SortOrder
     type?: SortOrder
-    expiresIn?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TokenMaxOrderByAggregateInput = {
@@ -5369,7 +8418,9 @@ export namespace Prisma {
     email?: SortOrder
     token?: SortOrder
     type?: SortOrder
-    expiresIn?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type TokenMinOrderByAggregateInput = {
@@ -5377,7 +8428,9 @@ export namespace Prisma {
     email?: SortOrder
     token?: SortOrder
     type?: SortOrder
-    expiresIn?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumTokenTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5390,6 +8443,36 @@ export namespace Prisma {
     _max?: NestedEnumTokenTypeFilter<$PrismaModel>
   }
 
+  export type LoginAttemptCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    success?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LoginAttemptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    success?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LoginAttemptMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    success?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -5397,11 +8480,25 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
+  export type RefreshTokenCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type RefreshTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5416,12 +8513,16 @@ export namespace Prisma {
     set?: $Enums.UserRole
   }
 
+  export type EnumAuthMethodFieldUpdateOperationsInput = {
+    set?: $Enums.AuthMethod
+  }
+
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
 
-  export type EnumAuthMethodFieldUpdateOperationsInput = {
-    set?: $Enums.AuthMethod
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -5442,6 +8543,20 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type RefreshTokenUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -5456,28 +8571,54 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput> | RefreshTokenCreateWithoutUserInput[] | RefreshTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUserInput | RefreshTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefreshTokenCreateManyUserInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUserInput | RefreshTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUserInput | RefreshTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
   }
 
-  export type UserUpdateOneWithoutAccountsNestedInput = {
+  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
     upsert?: UserUpsertWithoutAccountsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutRefreshTokensInput = {
+    create?: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRefreshTokensInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+    create?: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRefreshTokensInput
+    upsert?: UserUpsertWithoutRefreshTokensInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefreshTokensInput, UserUpdateWithoutRefreshTokensInput>, UserUncheckedUpdateWithoutRefreshTokensInput>
   }
 
   export type EnumTokenTypeFieldUpdateOperationsInput = {
@@ -5519,16 +8660,27 @@ export namespace Prisma {
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumAuthMethodFilter<$PrismaModel = never> = {
     equals?: $Enums.AuthMethod | EnumAuthMethodFieldRefInput<$PrismaModel>
     in?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
     notIn?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
     not?: NestedEnumAuthMethodFilter<$PrismaModel> | $Enums.AuthMethod
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -5608,14 +8760,6 @@ export namespace Prisma {
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedEnumAuthMethodWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.AuthMethod | EnumAuthMethodFieldRefInput<$PrismaModel>
     in?: $Enums.AuthMethod[] | ListEnumAuthMethodFieldRefInput<$PrismaModel>
@@ -5624,6 +8768,28 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAuthMethodFilter<$PrismaModel>
     _max?: NestedEnumAuthMethodFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -5640,31 +8806,31 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumTokenTypeFilter<$PrismaModel = never> = {
@@ -5688,9 +8854,13 @@ export namespace Prisma {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5699,9 +8869,13 @@ export namespace Prisma {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5713,6 +8887,38 @@ export namespace Prisma {
 
   export type AccountCreateManyUserInputEnvelope = {
     data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RefreshTokenCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RefreshTokenUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RefreshTokenCreateOrConnectWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type RefreshTokenCreateManyUserInputEnvelope = {
+    data: RefreshTokenCreateManyUserInput | RefreshTokenCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -5739,40 +8945,87 @@ export namespace Prisma {
     id?: StringFilter<"Account"> | string
     type?: StringFilter<"Account"> | string
     provider?: StringFilter<"Account"> | string
-    refreshToken?: StringNullableFilter<"Account"> | string | null
+    providerAccountId?: StringFilter<"Account"> | string
     accessToken?: StringNullableFilter<"Account"> | string | null
-    expiresAT?: IntFilter<"Account"> | number
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    expiresAt?: IntNullableFilter<"Account"> | number | null
+    tokenType?: StringNullableFilter<"Account"> | string | null
+    scope?: StringNullableFilter<"Account"> | string | null
+    idToken?: StringNullableFilter<"Account"> | string | null
     createdAt?: DateTimeFilter<"Account"> | Date | string
     updatedAt?: DateTimeFilter<"Account"> | Date | string
-    userId?: StringNullableFilter<"Account"> | string | null
+    userId?: StringFilter<"Account"> | string
+  }
+
+  export type RefreshTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    update: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<RefreshTokenCreateWithoutUserInput, RefreshTokenUncheckedCreateWithoutUserInput>
+  }
+
+  export type RefreshTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: RefreshTokenWhereUniqueInput
+    data: XOR<RefreshTokenUpdateWithoutUserInput, RefreshTokenUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RefreshTokenUpdateManyWithWhereWithoutUserInput = {
+    where: RefreshTokenScalarWhereInput
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type RefreshTokenScalarWhereInput = {
+    AND?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    OR?: RefreshTokenScalarWhereInput[]
+    NOT?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    id?: StringFilter<"RefreshToken"> | string
+    token?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    isRevoked?: BoolFilter<"RefreshToken"> | boolean
+    userAgent?: StringNullableFilter<"RefreshToken"> | string | null
+    ipAddress?: StringNullableFilter<"RefreshToken"> | string | null
+    userId?: StringFilter<"RefreshToken"> | string
+    createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    updatedAt?: DateTimeFilter<"RefreshToken"> | Date | string
   }
 
   export type UserCreateWithoutAccountsInput = {
     id?: string
+    firstname?: string | null
+    lastname?: string | null
     email: string
-    password: string
-    displayName: string
-    picture?: string | null
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
     role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
     isVerified?: boolean
+    isActive?: boolean
     isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
+    firstname?: string | null
+    lastname?: string | null
     email: string
-    password: string
-    displayName: string
-    picture?: string | null
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
     role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
     isVerified?: boolean
+    isActive?: boolean
     isTwoFactorEnabled?: boolean
-    method: $Enums.AuthMethod
+    lastLogin?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -5793,39 +9046,162 @@ export namespace Prisma {
 
   export type UserUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    picture?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutRefreshTokensInput = {
+    id?: string
+    firstname?: string | null
+    lastname?: string | null
+    email: string
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRefreshTokensInput = {
+    id?: string
+    firstname?: string | null
+    lastname?: string | null
+    email: string
+    password?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    role?: $Enums.UserRole
+    method?: $Enums.AuthMethod
+    isVerified?: boolean
+    isActive?: boolean
+    isTwoFactorEnabled?: boolean
+    lastLogin?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRefreshTokensInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
+  }
+
+  export type UserUpsertWithoutRefreshTokensInput = {
+    update: XOR<UserUpdateWithoutRefreshTokensInput, UserUncheckedUpdateWithoutRefreshTokensInput>
+    create: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRefreshTokensInput, UserUncheckedUpdateWithoutRefreshTokensInput>
+  }
+
+  export type UserUpdateWithoutRefreshTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    method?: EnumAuthMethodFieldUpdateOperationsInput | $Enums.AuthMethod
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isTwoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
     id?: string
     type: string
     provider: string
-    refreshToken?: string | null
+    providerAccountId: string
     accessToken?: string | null
-    expiresAT: number
+    refreshToken?: string | null
+    expiresAt?: number | null
+    tokenType?: string | null
+    scope?: string | null
+    idToken?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RefreshTokenCreateManyUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    isRevoked?: boolean
+    userAgent?: string | null
+    ipAddress?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5834,9 +9210,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5845,9 +9225,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5856,9 +9240,46 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     provider?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    providerAccountId?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
-    expiresAT?: IntFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableIntFieldUpdateOperationsInput | number | null
+    tokenType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    idToken?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

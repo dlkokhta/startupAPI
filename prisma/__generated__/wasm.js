@@ -122,14 +122,19 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  firstname: 'firstname',
+  lastname: 'lastname',
   email: 'email',
   password: 'password',
   displayName: 'displayName',
-  picture: 'picture',
+  avatar: 'avatar',
+  phone: 'phone',
   role: 'role',
-  isVerified: 'isVerified',
-  isTwoFactorEnabled: 'isTwoFactorEnabled',
   method: 'method',
+  isVerified: 'isVerified',
+  isActive: 'isActive',
+  isTwoFactorEnabled: 'isTwoFactorEnabled',
+  lastLogin: 'lastLogin',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -138,12 +143,28 @@ exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   type: 'type',
   provider: 'provider',
-  refreshToken: 'refreshToken',
+  providerAccountId: 'providerAccountId',
   accessToken: 'accessToken',
-  expiresAT: 'expiresAT',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  tokenType: 'tokenType',
+  scope: 'scope',
+  idToken: 'idToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
+};
+
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  isRevoked: 'isRevoked',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.TokenScalarFieldEnum = {
@@ -151,7 +172,19 @@ exports.Prisma.TokenScalarFieldEnum = {
   email: 'email',
   token: 'token',
   type: 'type',
-  expiresIn: 'expiresIn'
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LoginAttemptScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  success: 'success',
+  reason: 'reason',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -170,11 +203,12 @@ exports.Prisma.NullsOrder = {
 };
 exports.UserRole = exports.$Enums.UserRole = {
   REGULAR: 'REGULAR',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR'
 };
 
 exports.AuthMethod = exports.$Enums.AuthMethod = {
-  CREADENTIALS: 'CREADENTIALS',
+  CREDENTIALS: 'CREDENTIALS',
   GOOGLE: 'GOOGLE'
 };
 
@@ -187,7 +221,9 @@ exports.TokenType = exports.$Enums.TokenType = {
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
-  Token: 'Token'
+  RefreshToken: 'RefreshToken',
+  Token: 'Token',
+  LoginAttempt: 'LoginAttempt'
 };
 
 /**

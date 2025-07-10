@@ -9,19 +9,25 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String  @id @default(uuid())
+  firstname String? @map("first_name")
+  lastname  String? @map("last_name")
 
-  email              String   @unique
-  password           String
-  displayName        String
-  picture            String?
-  role               UserRole @default(REGULAR)
-  isVerified         Boolean  @default(false) @map("is_verified")
-  isTwoFactorEnabled Boolean  @default(false) @map("is_two_factor_enabled")
+  email              String     @unique
+  password           String?
+  displayName        String?
+  avatar             String?
+  phone              String?
+  role               UserRole   @default(REGULAR)
+  method             AuthMethod @default(CREDENTIALS)
+  isVerified         Boolean    @default(false) @map("is_verified")
+  isActive           Boolean    @default(true) @map("is_active")
+  isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
+  lastLogin          DateTime?  @map("last_login")
 
-  method AuthMethod
-
-  accounts Account[]
+  // Relations
+  accounts      Account[]
+  refreshTokens RefreshToken[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -32,39 +38,80 @@ model User {
 model Account {
   id String @id @default(uuid())
 
-  type     String
-  provider String
+  type              String
+  provider          String
+  providerAccountId String @map("provider_account_id")
 
-  refreshToken String? @map("refresh_token")
   accessToken  String? @map("access_token")
-  expiresAT    Int     @map("expires_at")
+  refreshToken String? @map("refresh_token")
+  expiresAt    Int?    @map("expires_at")
+  tokenType    String? @map("token_type")
+  scope        String?
+  idToken      String? @map("id_token")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?  @map("user_id")
 
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  @@unique([provider, providerAccountId])
   @@map("accounts")
 }
 
-model Token {
-  id String @id @default(uuid())
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  isRevoked Boolean  @default(false) @map("is_revoked")
 
+  // Device/session tracking
+  userAgent String? @map("user_agent")
+  ipAddress String? @map("ip_address")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("refresh_tokens")
+}
+
+model Token {
+  id        String    @id @default(uuid())
   email     String
   token     String    @unique
   type      TokenType
-  expiresIn DateTime  @map("expires_in")
+  expiresAt DateTime  @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tokens")
+}
+
+model LoginAttempt {
+  id        String  @id @default(uuid())
+  email     String
+  ipAddress String  @map("ip_address")
+  userAgent String? @map("user_agent")
+  success   Boolean
+  reason    String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("login_attempts")
 }
 
 enum UserRole {
   REGULAR
   ADMIN
+  MODERATOR
 }
 
 enum AuthMethod {
-  CREADENTIALS
+  CREDENTIALS
   GOOGLE
 }
 
