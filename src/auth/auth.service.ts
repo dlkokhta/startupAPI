@@ -1,46 +1,55 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-// import { PrismaService } from 'src/prisma/prisma.service';
-
-import { hash } from 'argon2';
-import { ConfigService } from '@nestjs/config';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
+import { PrismaService } from '../prisma/prisma.service';
+import { SignupDto } from './dto/signup.dto';
 
 @Injectable()
 export class AuthService {
-  private readonly JWT_SECRET: string;
-  private readonly JWT_ACCESS_TOKEN_TTL: string;
-  private readonly JWT_REFRESH_TOKEN_TTL: string;
+  constructor(private readonly prisma: PrismaService) {}
 
-  constructor(
-    // private readonly prismaService: PrismaService,
-    private readonly configService: ConfigService,
-  ) {
-    this.JWT_SECRET = configService.getOrThrow<string>('JWT_SECRET');
-    this.JWT_ACCESS_TOKEN_TTL = configService.getOrThrow<string>(
-      'JWT_ACCESS_TOKEN_TTL',
-    );
-    this.JWT_REFRESH_TOKEN_TTL = configService.getOrThrow<string>(
-      'JWT_REFRESH_TOKEN_TTL',
-    );
-  }
+  async signup(signupDto: SignupDto) {
+    const { firstname, lastname, email, password, displayName, avatar, phone } =
+      signupDto;
 
-  async register() {
-    // const { name, email, password } = dto;
-    // console.log(name, email, password);
-    // const existUser = await this.prismaService.user.findUnique({
-    //   where: {
-    //     email,
-    //   },
-    // });
-    // if (existUser) {
-    //   throw new ConflictException('User with this email already registered');
-    // }
-    // const user = await this.prismaService.user.create({
-    //   data: {
-    //     name,
-    //     email,
-    //     password: await hash(password),
-    //   },
-    // });
-    // return user;
+    try {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        throw new ConflictException('User with this email already exists');
+      }
+
+      const saltRounds = 12;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const newUser = await this.prisma.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          firstname: firstname || null,
+          lastname: lastname || null,
+          displayName: displayName || null,
+          avatar: avatar || null,
+          phone: phone || null,
+        },
+      });
+      // Return user without password
+      const { password: _, ...userResponse } = newUser;
+      return {
+        success: true,
+        message: 'User registered successfully',
+        user: userResponse,
+      };
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to register user');
+    }
   }
 }
