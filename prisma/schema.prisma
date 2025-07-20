@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./__generated__"
 }
 
 datasource db {
@@ -9,21 +8,20 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  firstname String? @map("first_name")
-  lastname  String? @map("last_name")
-
-  email       String     @unique
-  password    String?
-  displayName String?
-  avatar      String?
-  phone       String?
-  role        UserRole   @default(REGULAR)
-  method      AuthMethod @default(CREDENTIALS)
-  isVerified  Boolean    @default(false) @map("is_verified")
-  isActive    Boolean    @default(true) @map("is_active")
-  // isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
-  lastLogin   DateTime?  @map("last_login")
+  id                 String     @id @default(uuid())
+  firstname          String?    @map("first_name")
+  lastname           String?    @map("last_name")
+  email              String     @unique
+  password           String?
+  displayName        String?
+  avatar             String?
+  phone              String?
+  role               UserRole   @default(REGULAR)
+  method             AuthMethod @default(CREDENTIALS)
+  isVerified         Boolean    @default(false) @map("is_verified")
+  isActive           Boolean    @default(true) @map("is_active")
+  isTwoFactorEnabled Boolean    @default(false) @map("is_two_factor_enabled")
+  lastLogin          DateTime?  @map("last_login")
 
   // Relations
   accounts      Account[]

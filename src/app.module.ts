@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.utils';
+import { UserModule } from './user/user.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [
@@ -12,8 +14,9 @@ import { IS_DEV_ENV } from './libs/common/utils/is-dev.utils';
       ignoreEnvFile: !IS_DEV_ENV,
       isGlobal: true,
     }),
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

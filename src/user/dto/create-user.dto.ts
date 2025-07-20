@@ -11,6 +11,7 @@ import {
   IsPhoneNumber,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsString({ message: 'First name must be a string' })
