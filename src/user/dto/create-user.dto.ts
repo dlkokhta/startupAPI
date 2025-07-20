@@ -11,9 +11,15 @@ import {
   IsPhoneNumber,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
+  @ApiProperty({
+    example: 'John',
+    description: 'First name of the user',
+    minLength: 2,
+    maxLength: 50,
+  })
   @IsString({ message: 'First name must be a string' })
   @IsNotEmpty({ message: 'First name is required' })
   @Transform(({ value }) => value?.trim())
@@ -25,6 +31,12 @@ export class CreateUserDto {
   @MaxLength(50, { message: 'First name cannot exceed 50 characters' })
   firstname: string;
 
+  @ApiProperty({
+    example: 'Doe',
+    description: 'Last name of the user',
+    minLength: 2,
+    maxLength: 50,
+  })
   @IsString({ message: 'Last name must be a string' })
   @IsNotEmpty({ message: 'Last name is required' })
   @Transform(({ value }) => value?.trim())
@@ -36,6 +48,11 @@ export class CreateUserDto {
   @MaxLength(50, { message: 'Last name cannot exceed 50 characters' })
   lastname: string;
 
+  @ApiProperty({
+    example: 'john.doe@example.com',
+    description: 'Unique user email address',
+    maxLength: 255,
+  })
   @IsString({ message: 'Email must be a string' })
   @IsNotEmpty({ message: 'Email is required' })
   @Transform(({ value }) => value?.trim().toLowerCase())
@@ -43,6 +60,13 @@ export class CreateUserDto {
   @MaxLength(255, { message: 'Email cannot exceed 255 characters' })
   email: string;
 
+  @ApiProperty({
+    example: 'StrongP@ssw0rd!',
+    description:
+      'Password with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character',
+    minLength: 8,
+    maxLength: 128,
+  })
   @IsString({ message: 'Password must be a string' })
   @IsNotEmpty({ message: 'Password is required' })
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
@@ -62,10 +86,18 @@ export class CreateUserDto {
   )
   password: string;
 
+  @ApiPropertyOptional({
+    example: 'https://example.com/avatar.png',
+    description: 'URL of the user avatar image',
+  })
   @IsOptional()
   @IsUrl({}, { message: 'Avatar must be a valid URL' })
   avatar?: string;
 
+  @ApiPropertyOptional({
+    example: '+995xxxxxxxxx',
+    description: 'Phone number in international format',
+  })
   @IsOptional()
   @IsPhoneNumber(undefined, { message: 'Phone must be a valid phone number' })
   phone?: string;
