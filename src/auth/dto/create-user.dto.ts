@@ -9,7 +9,9 @@ import {
   IsOptional,
   IsUrl,
   IsPhoneNumber,
+  Validate,
 } from 'class-validator';
+import { IsPasswordsMatchingConstraint } from '../../libs/common/validators/is-passwords-matching';
 import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -86,19 +88,30 @@ export class CreateUserDto {
   )
   password: string;
 
-  @ApiPropertyOptional({
-    example: 'https://example.com/avatar.png',
-    description: 'URL of the user avatar image',
+  @ApiProperty({
+    example: 'StrongP@ssw0rd!',
+    description:
+      'Repeat password for confirmation. Must match the password field.',
+    minLength: 8,
+    maxLength: 128,
   })
-  @IsOptional()
-  @IsUrl({}, { message: 'Avatar must be a valid URL' })
-  avatar?: string;
-
-  @ApiPropertyOptional({
-    example: '+995xxxxxxxxx',
-    description: 'Phone number in international format',
-  })
-  @IsOptional()
-  @IsPhoneNumber(undefined, { message: 'Phone must be a valid phone number' })
-  phone?: string;
+  @IsString({ message: 'Password must be a string' })
+  @IsNotEmpty({ message: 'Password is required' })
+  @MinLength(8, { message: 'Password must be at least 8 characters long' })
+  @MaxLength(128, { message: 'Password cannot exceed 128 characters' })
+  @IsStrongPassword(
+    {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    },
+    {
+      message:
+        'Password must contain at least 8 characters with uppercase, lowercase, number, and special character',
+    },
+  )
+  @Validate(IsPasswordsMatchingConstraint)
+  passwordRepeat: string;
 }
