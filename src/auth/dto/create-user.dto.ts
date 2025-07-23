@@ -6,9 +6,6 @@ import {
   MaxLength,
   MinLength,
   IsStrongPassword,
-  IsOptional,
-  IsUrl,
-  IsPhoneNumber,
   Validate,
 } from 'class-validator';
 import { IsPasswordsMatchingConstraint } from '../../libs/common/validators/is-passwords-matching';
