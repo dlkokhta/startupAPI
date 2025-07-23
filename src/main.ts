@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser';
+// import * as cookieParser from 'cookie-parser';
+// import IORedis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -9,6 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = app.get(ConfigService);
+  // const redis = new IORedis(config.getOrThrow<string>('REDIS_URL'));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -17,6 +19,7 @@ async function bootstrap() {
     }),
   );
 
+  //cors config
   app.enableCors({
     origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),
     credentials: true,
