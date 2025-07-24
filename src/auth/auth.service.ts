@@ -71,4 +71,64 @@ export class AuthService {
       refreshToken, // this can go in cookie
     };
   }
+
+  // async refresh(refreshToken: string) {
+  //   // 1. verify JWT
+  //   let payload: any;
+  //   try {
+  //     payload = this.jwtService.verify(refreshToken);
+  //   } catch {
+  //     throw new UnauthorizedException('Invalid refresh token');
+  //   }
+
+  //   // 2. look up the hashed token in the Session table
+  //   const session = await this.prismaService.session.findFirst({
+  //     where: { userId: payload.sub },
+  //   });
+  //   if (
+  //     !session ||
+  //     !(await argon2.verify(session.refreshToken, refreshToken))
+  //   ) {
+  //     throw new UnauthorizedException('Refresh token not found');
+  //   }
+
+  //   // 3. optional: check expiry
+  //   if (new Date() > session.expiresAt) {
+  //     throw new UnauthorizedException('Refresh token expired');
+  //   }
+
+  //   // 4. generate new tokens
+  //   const newPayload = {
+  //     sub: payload.sub,
+  //     email: payload.email,
+  //     role: payload.role,
+  //   };
+  //   const newAccess = this.jwtService.sign(newPayload, { expiresIn: '15m' });
+  //   const newRefresh = this.jwtService.sign(newPayload, { expiresIn: '7d' });
+
+  //   // 5. rotate: delete old session, create new one
+  //   await this.prismaService.session.delete({ where: { id: session.id } });
+  //   await this.prismaService.session.create({
+  //     data: {
+  //       userId: payload.sub,
+  //       refreshToken: await argon2.hash(newRefresh),
+  //       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  //     },
+  //   });
+
+  //   return { accessToken: newAccess, refreshToken: newRefresh };
+  // }
+
+  // async logout(refreshToken: string) {
+  //   try {
+  //     const payload = this.jwtService.verify(refreshToken);
+  //     await this.prismaService.session.deleteMany({
+  //       where: { userId: payload.sub },
+  //     });
+  //     return { message: 'Logged out successfully' };
+  //   } catch {
+  //     // Token invalid, but still return success (idempotent)
+  //     return { message: 'Logged out successfully' };
+  //   }
+  // }
 }
