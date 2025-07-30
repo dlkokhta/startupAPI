@@ -77,6 +77,11 @@ model Session {
   @@map("sessions")
 }
 
+model Item {
+  id   String @id @default(uuid())
+  name String
+}
+
 enum UserRole {
   REGULAR
   ADMIN

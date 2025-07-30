@@ -17,10 +17,7 @@ export class UserService {
     const { passwordRepeat, password, ...rest } = createUserDto;
     const hashedPassword = await hash(password);
     return this.prismaService.user.create({
-      data: {
-        ...rest,
-        password: hashedPassword,
-      },
+      data: { password: hashedPassword, ...rest },
     });
   }
 }

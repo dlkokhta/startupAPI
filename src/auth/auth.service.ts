@@ -26,7 +26,12 @@ export class AuthService {
     return newUser;
   }
 
-  async loginUser(loginUserDto: LoginUserDto, ip?: string, userAgent?: string) {
+  async loginUser(
+    loginUserDto: LoginUserDto,
+    ip?: string,
+    userAgent?: string,
+    res?: Response,
+  ) {
     const userExist = await this.userService.findByEmail(loginUserDto.email);
     if (!userExist || !userExist.password) {
       throw new NotFoundException(
@@ -48,9 +53,16 @@ export class AuthService {
       sub: userExist.id,
       email: userExist.email,
       role: userExist.role,
+      salt: process.env.JWT_SALT || 'default_salt',
     };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    });
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    });
 
     // Save refresh token in Session table (hashed)
     await this.prismaService.session.create({

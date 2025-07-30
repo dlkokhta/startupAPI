@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.utils';
 import { UserModule } from './user/user.module';
 import { PrismaService } from './prisma/prisma.service';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PrismaService } from './prisma/prisma.service';
       isGlobal: true,
     }),
     UserModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
