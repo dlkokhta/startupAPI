@@ -12,7 +12,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUserDto {
   @ApiProperty({
-    example: 'john.doe@example.com',
+    example: 'demetre@gmail.com',
     description: 'Unique user email address',
     maxLength: 255,
   })
@@ -24,7 +24,7 @@ export class LoginUserDto {
   email: string;
 
   @ApiProperty({
-    example: 'StrongP@ssw0rd!',
+    example: 'Demetre1!',
     description:
       'Password with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character',
     minLength: 8,

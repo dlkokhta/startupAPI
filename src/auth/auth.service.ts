@@ -26,12 +26,7 @@ export class AuthService {
     return newUser;
   }
 
-  async loginUser(
-    loginUserDto: LoginUserDto,
-    ip?: string,
-    userAgent?: string,
-    res?: Response,
-  ) {
+  async loginUser(loginUserDto: LoginUserDto, ip?: string, userAgent?: string) {
     const userExist = await this.userService.findByEmail(loginUserDto.email);
     if (!userExist || !userExist.password) {
       throw new NotFoundException(
@@ -50,10 +45,9 @@ export class AuthService {
 
     // Generate tokens
     const payload = {
-      sub: userExist.id,
+      userId: userExist.id,
       email: userExist.email,
       role: userExist.role,
-      salt: process.env.JWT_SALT || 'default_salt',
     };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
@@ -61,14 +55,16 @@ export class AuthService {
     });
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
+      // Default to 7d; override via JWT_REFRESH_EXPIRES_IN if you want shorter for testing
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
     });
 
-    // Save refresh token in Session table (hashed)
+    const hashedRefreshToken = await argon2.hash(refreshToken);
+
     await this.prismaService.session.create({
       data: {
         userId: userExist.id,
-        refreshToken: await argon2.hash(refreshToken),
+        refreshToken: hashedRefreshToken,
         ip,
         userAgent,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
@@ -84,63 +80,79 @@ export class AuthService {
     };
   }
 
-  // async refresh(refreshToken: string) {
-  //   // 1. verify JWT
-  //   let payload: any;
-  //   try {
-  //     payload = this.jwtService.verify(refreshToken);
-  //   } catch {
-  //     throw new UnauthorizedException('Invalid refresh token');
-  //   }
+  async refresh(refreshToken: string) {
+    // 1. verify JWT
+    let payload: any;
+    try {
+      payload = this.jwtService.verify(refreshToken, {
+        secret: process.env.JWT_SECRET,
+      });
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
 
-  //   // 2. look up the hashed token in the Session table
-  //   const session = await this.prismaService.session.findFirst({
-  //     where: { userId: payload.sub },
-  //   });
-  //   if (
-  //     !session ||
-  //     !(await argon2.verify(session.refreshToken, refreshToken))
-  //   ) {
-  //     throw new UnauthorizedException('Refresh token not found');
-  //   }
+    // 2. look up all sessions for this user and verify the refresh token hash
+    const sessions = await this.prismaService.session.findMany({
+      where: { userId: payload.userId },
+    });
 
-  //   // 3. optional: check expiry
-  //   if (new Date() > session.expiresAt) {
-  //     throw new UnauthorizedException('Refresh token expired');
-  //   }
+    let session: any = null;
+    for (const s of sessions) {
+      if (await argon2.verify(s.refreshToken, refreshToken)) {
+        session = s;
+        break;
+      }
+    }
 
-  //   // 4. generate new tokens
-  //   const newPayload = {
-  //     sub: payload.sub,
-  //     email: payload.email,
-  //     role: payload.role,
-  //   };
-  //   const newAccess = this.jwtService.sign(newPayload, { expiresIn: '15m' });
-  //   const newRefresh = this.jwtService.sign(newPayload, { expiresIn: '7d' });
+    if (!session) {
+      throw new UnauthorizedException('Refresh token not found');
+    }
 
-  //   // 5. rotate: delete old session, create new one
-  //   await this.prismaService.session.delete({ where: { id: session.id } });
-  //   await this.prismaService.session.create({
-  //     data: {
-  //       userId: payload.sub,
-  //       refreshToken: await argon2.hash(newRefresh),
-  //       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  //     },
-  //   });
+    // 3. check expiry
+    if (new Date() > session.expiresAt) {
+      throw new UnauthorizedException('Refresh token expired');
+    }
 
-  //   return { accessToken: newAccess, refreshToken: newRefresh };
-  // }
+    // 4. generate new tokens
+    const newPayload = {
+      userId: payload.userId,
+      email: payload.email,
+      role: payload.role,
+    };
+    const newAccess = this.jwtService.sign(newPayload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    });
+    const newRefresh = this.jwtService.sign(newPayload, {
+      secret: process.env.JWT_SECRET,
+      // Default to 7d; override via env
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    });
 
-  // async logout(refreshToken: string) {
-  //   try {
-  //     const payload = this.jwtService.verify(refreshToken);
-  //     await this.prismaService.session.deleteMany({
-  //       where: { userId: payload.sub },
-  //     });
-  //     return { message: 'Logged out successfully' };
-  //   } catch {
-  //     // Token invalid, but still return success (idempotent)
-  //     return { message: 'Logged out successfully' };
-  //   }
-  // }
+    // 5. rotate: update existing session in-place (safer than delete+create)
+    console.log(`Rotating refresh token for session: ${session.id}`);
+    await this.prismaService.session.update({
+      where: { id: session.id },
+      data: {
+        refreshToken: await argon2.hash(newRefresh),
+
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
+
+    return { accessToken: newAccess, refreshToken: newRefresh };
+  }
+
+  async logout(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+      await this.prismaService.session.deleteMany({
+        where: { userId: payload.userId },
+      });
+      return { message: 'Logged out successfully' };
+    } catch {
+      // Token invalid, but still return success (idempotent)
+      return { message: 'Logged out successfully' };
+    }
+  }
 }

@@ -20,7 +20,6 @@ export class AuthController {
   @Post('signup')
   @HttpCode(HttpStatus.OK)
   public async registerUser(@Body() createUserDto: CreateUserDto) {
-    console.log('Registering user:', createUserDto);
     return this.authService.registerUser(createUserDto);
   }
 
@@ -50,41 +49,44 @@ export class AuthController {
     return result; // JSON body: { user, accessToken }
   }
 
-  // @Post('refresh')
-  // @HttpCode(HttpStatus.OK)
-  // public async refreshTokens(
-  //   @Req() req: Request,
-  //   @Res({ passthrough: true }) res: Response,
-  // ) {
-  //   const refreshToken = req.cookies['refreshToken'];
-  //   if (!refreshToken) throw new UnauthorizedException('No refresh token');
-  //   const tokens = await this.authService.refresh(refreshToken);
-  //   res.cookie('refreshToken', tokens.refreshToken, {
-  //     httpOnly: true,
-  //     secure: process.env.NODE_ENV === 'production',
-  //     sameSite: 'lax',
-  //     path: '/auth/refresh',
-  //     maxAge: 7 * 24 * 60 * 60 * 1000,
-  //   });
-  //   return { accessToken: tokens.accessToken };
-  // }
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  public async refreshTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies['refreshToken'];
+    if (!refreshToken) throw new UnauthorizedException('No refresh token');
 
-  // @Post('logout')
-  // @HttpCode(HttpStatus.OK)
-  // public async logout(
-  //   @Req() req: Request,
-  //   @Res({ passthrough: true }) res: Response,
-  // ) {
-  //   const refreshToken = req.cookies['refreshToken'];
+    const tokens = await this.authService.refresh(refreshToken);
 
-  //   if (refreshToken) {
-  //     await this.authService.logout(refreshToken);
-  //   }
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-  //   res.clearCookie('refreshToken', {
-  //     path: '/auth', // Match the path used when setting
-  //   });
+    return { accessToken: tokens.accessToken };
+  }
 
-  //   return { message: 'Logged out successfully' };
-  // }
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  public async logout(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies['refreshToken'];
+
+    if (refreshToken) {
+      await this.authService.logout(refreshToken);
+    }
+
+    res.clearCookie('refreshToken', {
+      path: '/',
+    });
+
+    return { message: 'Logged out successfully' };
+  }
 }
