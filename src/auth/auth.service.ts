@@ -19,6 +19,28 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
+  async validateUser(userDetails: any) {
+    // Check if user exists in database
+    // If not, create new user
+    // Return user object
+    return userDetails;
+  }
+
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+      user: user,
+    };
+  }
+
+  async findOrCreateUser(userDetails: any) {
+    // Your logic to find or create user in database
+    // This is where you'd interact with your database
+    console.log('User details from Google:', userDetails);
+    return userDetails;
+  }
+
   async registerUser(createUserDto: CreateUserDto) {
     const userExist = await this.userService.findByEmail(createUserDto.email);
     if (userExist) throw new ConflictException('User already exists');
