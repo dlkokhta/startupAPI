@@ -10,6 +10,9 @@ import { LoginUserDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon2 from 'argon2';
+import { GoogleRequest } from './types/google-request.type';
+import { GoogleRegisterDto } from './dto/google-register.dto';
+import { GoogleLoginDto } from './dto/google-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -19,27 +22,84 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  async validateUser(userDetails: any) {
-    // Check if user exists in database
-    // If not, create new user
-    // Return user object
-    return userDetails;
-  }
+  //google user login
+  async loginGoogleUser(googleUserLogin: GoogleLoginDto) {
+    const userExist = await this.userService.findByEmail(googleUserLogin.email);
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    // Generate tokens
+    const payload = {
+      userId: userExist?.id,
+      email: userExist?.email,
+      role: userExist?.role,
+    };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1m',
+    });
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      // Default to 7d; override via JWT_REFRESH_EXPIRES_IN if you want shorter for testing
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    });
+
+    const hashedRefreshToken = await argon2.hash(refreshToken);
+
+    await this.prismaService.session.create({
+      data: {
+        userId: userExist!.id,
+        refreshToken: hashedRefreshToken,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      },
+    });
+
     return {
-      access_token: this.jwtService.sign(payload),
-      user: user,
+      userExist,
+      accessToken,
+      refreshToken, // this can go in cookie
     };
   }
 
-  async findOrCreateUser(userDetails: any) {
-    // Your logic to find or create user in database
-    // This is where you'd interact with your database
-    console.log('User details from Google:', userDetails);
-    return userDetails;
+  //google user registration
+  async registerGoogleUser(googleUserRegister: GoogleRegisterDto) {
+    const userExist = await this.userService.findByEmail(
+      googleUserRegister.email,
+    );
+    if (userExist) throw new ConflictException('User already exists');
+
+    // Map Google DTO to CreateUserDto
+    const createUserDto: CreateUserDto = {
+      email: googleUserRegister.email,
+      firstname: googleUserRegister.firstName || '',
+      lastname: googleUserRegister.lastName || '',
+      password: 'google-oauth-user', // placeholder, won't be used
+      passwordRepeat: 'google-oauth-user',
+    };
+
+    const newUser = await this.userService.create(createUserDto);
+    return newUser;
   }
+
+  async findOrCreateGoogleUser(googleUser: any) {
+    const existingUser = await this.userService.findByEmail(googleUser.email);
+
+    if (existingUser) {
+      return this.loginGoogleUser({ email: googleUser.email });
+    }
+
+    const newUser = await this.registerGoogleUser({
+      email: googleUser.email,
+      firstName: googleUser.firstName,
+      lastName: googleUser.lastName,
+      provider: 'google',
+      googleId: googleUser.googleId,
+      avatar: googleUser.avatar,
+    });
+
+    // After registration, log in the user and return tokens
+    return this.loginGoogleUser({ email: newUser.email });
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
 
   async registerUser(createUserDto: CreateUserDto) {
     const userExist = await this.userService.findByEmail(createUserDto.email);
@@ -73,7 +133,7 @@ export class AuthService {
     };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1m',
     });
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
@@ -143,7 +203,7 @@ export class AuthService {
     };
     const newAccess = this.jwtService.sign(newPayload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1m',
     });
     const newRefresh = this.jwtService.sign(newPayload, {
       secret: process.env.JWT_SECRET,

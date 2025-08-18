@@ -20,29 +20,41 @@ import { GoogleOAuthGuard } from './guards/google-oauth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // Google OAuth Login - Step 1: Redirect to Google
   @Get('google')
   @UseGuards(GoogleOAuthGuard)
-  async googleAuth(@Req() req) {
+  async googleAuth() {
+    console.log('Redirecting to Google for authentication');
     // This will redirect to Google
   }
 
+  // Google OAuth Login - Step 2: Handle callback from Google
   @Get('google/callback')
   @UseGuards(GoogleOAuthGuard)
-  async googleAuthRedirect(@Req() req, @Res() res: Response) {
-    // Handle the callback from Google
-    const user = req.user;
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    try {
+      const googleUser = req.user;
+      const result = await this.authService.findOrCreateGoogleUser(googleUser);
 
-    // Here you can:
-    // 1. Save user to database
-    // 2. Generate JWT token
-    // 3. Set session
-    // 4. Redirect to frontend with token
+      res.cookie('refreshToken', result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
 
-    // Example: redirect to frontend with user data
-    const userData = encodeURIComponent(JSON.stringify(user));
-    res.redirect(`http://localhost:3000/auth/success?user=${userData}`);
+      // Send only the access token to frontend
+      return res.redirect(
+        `http://localhost:5173/auth/success?token=${result.accessToken}`,
+      );
+    } catch (error) {
+      const errorUrl = `http://localhost:5173/auth/error?status=error&message=${encodeURIComponent(error.message)}`;
+      return res.redirect(errorUrl);
+    }
   }
 
+  // Get user profile
   @Get('profile')
   getProfile(@Req() req) {
     return req.user;

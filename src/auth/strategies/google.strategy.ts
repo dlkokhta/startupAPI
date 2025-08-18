@@ -1,32 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  Strategy,
-  VerifyCallback,
-  StrategyOptions,
-} from 'passport-google-oauth20';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
-    // Validate environment variables first
-    const clientID = process.env.GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const callbackURL = process.env.GOOGLE_CALLBACK_URL;
+  constructor(private configService: ConfigService) {
+    const clientID = configService.get<string>('GOOGLE_CLIENT_ID');
+    const clientSecret = configService.get<string>('GOOGLE_CLIENT_SECRET');
+    const callbackURL = configService.get<string>('GOOGLE_CALLBACK_URL');
 
     if (!clientID || !clientSecret || !callbackURL) {
-      throw new Error('Missing Google OAuth environment variables');
+      throw new Error('Missing Google OAuth config vars');
     }
 
-    // Create options object with proper typing
-    const options: StrategyOptions = {
+    super({
       clientID,
       clientSecret,
       callbackURL,
       scope: ['email', 'profile'],
-    };
-
-    super(options);
+    });
   }
 
   async validate(
@@ -35,7 +28,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
-    const { name, emails, photos } = profile;
+    const { emails, name, photos } = profile;
+
     const user = {
       email: emails[0].value,
       firstName: name.givenName,
@@ -44,6 +38,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       accessToken,
       refreshToken,
     };
+
     done(null, user);
   }
 }

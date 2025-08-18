@@ -111,4 +111,7 @@ export class CreateUserDto {
   )
   @Validate(IsPasswordsMatchingConstraint)
   passwordRepeat: string;
+
+  @IsString({ message: 'Provider must be a string' })
+  provider?: string;
 }
