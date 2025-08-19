@@ -83,6 +83,7 @@ export class AuthService {
     const existingUser = await this.userService.findByEmail(googleUser.email);
 
     if (existingUser) {
+      console.log('User found, logging in...');
       return this.loginGoogleUser({ email: googleUser.email });
     }
 
@@ -94,6 +95,7 @@ export class AuthService {
       googleId: googleUser.googleId,
       avatar: googleUser.avatar,
     });
+    console.log('New user registered:', newUser);
 
     // After registration, log in the user and return tokens
     return this.loginGoogleUser({ email: newUser.email });
@@ -102,6 +104,7 @@ export class AuthService {
   ///////////////////////////////////////////////////////////////////////////////////
 
   async registerUser(createUserDto: CreateUserDto) {
+    console.log('Registering new user:', createUserDto);
     const userExist = await this.userService.findByEmail(createUserDto.email);
     if (userExist) throw new ConflictException('User already exists');
     const newUser = await this.userService.create(createUserDto);
