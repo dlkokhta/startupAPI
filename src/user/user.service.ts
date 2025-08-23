@@ -20,4 +20,10 @@ export class UserService {
       data: { password: hashedPassword, ...rest },
     });
   }
+
+  public async findById(id: string) {
+    return this.prismaService.user.findUnique({
+      where: { id },
+    });
+  }
 }
