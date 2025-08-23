@@ -76,7 +76,19 @@ export class AuthService {
     };
 
     const newUser = await this.userService.create(createUserDto);
-    return newUser;
+    console.log('newUser!!!', newUser);
+
+    const newAccount = await this.prismaService.account.create({
+      data: {
+        type: 'oauth', // or 'google'
+        provider: 'google',
+        userId: newUser.id,
+        accessToken: googleUserRegister.accessToken || null,
+        refreshToken: googleUserRegister.refreshToken || null,
+        expiresAt: googleUserRegister.expiresAt || 0,
+      },
+    });
+    return { newUser, newAccount };
   }
 
   async findOrCreateGoogleUser(googleUser: any) {
@@ -98,7 +110,7 @@ export class AuthService {
     console.log('New user registered:', newUser);
 
     // After registration, log in the user and return tokens
-    return this.loginGoogleUser({ email: newUser.email });
+    return this.loginGoogleUser({ email: newUser.newUser.email });
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
